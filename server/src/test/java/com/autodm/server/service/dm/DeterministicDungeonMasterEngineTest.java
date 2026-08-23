@@ -4,6 +4,7 @@ import com.autodm.server.model.Campaign;
 import com.autodm.server.model.CampaignEvent;
 import com.autodm.server.repository.CampaignEventRepository;
 import com.autodm.server.repository.CampaignRepository;
+import com.autodm.server.repository.SceneRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -19,13 +20,16 @@ class DeterministicDungeonMasterEngineTest {
 
     private CampaignRepository campaignRepository;
     private CampaignEventRepository campaignEventRepository;
+    private SceneRepository sceneRepository;
     private DeterministicDungeonMasterEngine engine;
 
     @BeforeEach
     void setUp() {
         campaignRepository = mock(CampaignRepository.class);
         campaignEventRepository = mock(CampaignEventRepository.class);
-        engine = new DeterministicDungeonMasterEngine(campaignRepository, campaignEventRepository);
+        sceneRepository = mock(SceneRepository.class);
+        engine = new DeterministicDungeonMasterEngine(campaignRepository, campaignEventRepository, sceneRepository);
+        when(sceneRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
     }
 
     @Test
@@ -79,7 +83,7 @@ class DeterministicDungeonMasterEngineTest {
         // Assert
         assertNotNull(scene);
         assertEquals("Campaign: Another Campaign", scene.getTitle());
-        assertEquals("IDLE", scene.getStatus());
+        assertEquals("ACTIVE", scene.getStatus());
         assertFalse(scene.getAvailableActions().isEmpty());
     }
 

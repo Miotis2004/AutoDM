@@ -3,24 +3,31 @@ package com.autodm.server.service.dm;
 import com.autodm.server.model.Campaign;
 import com.autodm.server.model.CampaignEvent;
 import com.autodm.server.model.CampaignEventType;
+import com.autodm.server.model.Scene;
+import com.autodm.server.model.SceneStatus;
 import com.autodm.server.repository.CampaignEventRepository;
 import com.autodm.server.repository.CampaignRepository;
+import com.autodm.server.repository.SceneRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class DeterministicDungeonMasterEngine implements DungeonMasterEngine {
 
     private final CampaignRepository campaignRepository;
     private final CampaignEventRepository campaignEventRepository;
+    private final SceneRepository sceneRepository;
 
     public DeterministicDungeonMasterEngine(CampaignRepository campaignRepository,
-                                            CampaignEventRepository campaignEventRepository) {
+                                            CampaignEventRepository campaignEventRepository,
+                                            SceneRepository sceneRepository) {
         this.campaignRepository = campaignRepository;
         this.campaignEventRepository = campaignEventRepository;
+        this.sceneRepository = sceneRepository;
     }
 
     @Override
@@ -49,19 +56,41 @@ public class DeterministicDungeonMasterEngine implements DungeonMasterEngine {
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public SceneInfo getCurrentScene(Long campaignId) {
         Campaign campaign = campaignRepository.findById(campaignId)
                 .orElseThrow(() -> new IllegalArgumentException("Campaign not found: " + campaignId));
 
-        // Mock current scene info based on deterministic logic
-        // We could look up the most recent events, active encounter, etc.
+        Scene currentScene = campaign.getCurrentScene();
+        if (currentScene == null) {
+            currentScene = new Scene();
+            currentScene.setCampaign(campaign);
+            currentScene.setTitle("Campaign: " + campaign.getTitle());
+            currentScene.setNarrative("You are in a dimly lit tavern.");
+            currentScene.setStatus(SceneStatus.ACTIVE);
+            currentScene = sceneRepository.save(currentScene);
+            campaign.setCurrentScene(currentScene);
+            campaignRepository.save(campaign);
+        }
+
         SceneInfo info = new SceneInfo();
-        info.setTitle("Campaign: " + campaign.getTitle());
-        info.setNarrative("You are in a dimly lit tavern.");
-        info.setStatus("IDLE");
+        info.setTitle(currentScene.getTitle());
+        info.setNarrative(currentScene.getNarrative());
+        info.setStatus(currentScene.getStatus().name());
         info.setAvailableActions(List.of("Look around", "Talk to barkeep", "Leave"));
-        info.setInvolvedCharacterIds(Collections.emptyList());
+
+        List<Long> characterIds = currentScene.getInvolvedPlayerCharacters().stream()
+                .map(pc -> pc.getId())
+                .collect(Collectors.toList());
+        info.setInvolvedCharacterIds(characterIds);
+
+        if (currentScene.getCurrentLocation() != null) {
+            info.setCurrentLocationId(currentScene.getCurrentLocation().getId());
+        }
+
+        if (currentScene.getActiveEncounter() != null) {
+            info.setEncounterId(currentScene.getActiveEncounter().getId());
+        }
 
         return info;
     }
