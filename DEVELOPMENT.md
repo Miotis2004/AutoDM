@@ -151,10 +151,10 @@ This document outlines the step-by-step development process for the AutoDM proje
 - **Require Repository Change:** True
 
 **Acceptance Criteria:**
-- [ ] The NPC entity stores name, description, role, disposition, faction, current location, and active/inactive state.
-- [ ] NPC relationship toward the party and notes are stored.
-- [ ] Optional combat statistics are supported for relevant NPCs.
-- [ ] NPC state persists across sessions within a campaign.
+- [x] The NPC entity stores name, description, role, disposition, faction, current location, and active/inactive state.
+- [x] NPC relationship toward the party and notes are stored.
+- [x] Optional combat statistics are supported for relevant NPCs.
+- [x] NPC state persists across sessions within a campaign.
 
 ### PROJECT-12: Faction domain model and repository
 **Objective:** Implement the Faction entity with name, description, disposition, relationships, reputation, and notes.
