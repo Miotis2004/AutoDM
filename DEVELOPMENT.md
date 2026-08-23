@@ -81,10 +81,10 @@ This document outlines the step-by-step development process for the AutoDM proje
 - **Require Repository Change:** False
 
 **Acceptance Criteria:**
-- [ ] Conventions document the separation between controllers, services, repositories, and domain models.
-- [ ] Conventions prohibit application-level Java declarations that collide with common JDK framework types.
-- [ ] Conventions require thin controllers and game logic kept out of controllers.
-- [ ] The conventions are recorded in the repository and referenced by later tasks.
+- [x] Conventions document the separation between controllers, services, repositories, and domain models.
+- [x] Conventions prohibit application-level Java declarations that collide with common JDK framework types.
+- [x] Conventions require thin controllers and game logic kept out of controllers.
+- [x] The conventions are recorded in the repository and referenced by later tasks.
 
 ### PROJECT-07: Campaign domain model and repository
 **Objective:** Implement the Campaign entity with title, description, status, dates, notes, and isolated state, plus its JPA repository.
