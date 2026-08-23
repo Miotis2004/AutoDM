@@ -34,6 +34,11 @@ public class PlayerCharacter {
 
     private Integer hitPoints = 10;
     private Integer maximumHitPoints = 10;
+    private Integer temporaryHitPoints = 0;
+
+    private Boolean isUnconscious = false;
+    private Boolean isDead = false;
+
     private Integer armorClass = 10;
     private Integer movement = 30;
 
@@ -55,6 +60,9 @@ public class PlayerCharacter {
 
     @Column(columnDefinition = "TEXT")
     private String generalProficiencies;
+
+    @Column(columnDefinition = "TEXT")
+    private String conditions;
 
     public PlayerCharacter() {
     }
@@ -137,6 +145,30 @@ public class PlayerCharacter {
 
     public void setMaximumHitPoints(Integer maximumHitPoints) {
         this.maximumHitPoints = maximumHitPoints;
+    }
+
+    public Integer getTemporaryHitPoints() {
+        return temporaryHitPoints;
+    }
+
+    public void setTemporaryHitPoints(Integer temporaryHitPoints) {
+        this.temporaryHitPoints = temporaryHitPoints;
+    }
+
+    public Boolean getIsUnconscious() {
+        return isUnconscious;
+    }
+
+    public void setIsUnconscious(Boolean isUnconscious) {
+        this.isUnconscious = isUnconscious;
+    }
+
+    public Boolean getIsDead() {
+        return isDead;
+    }
+
+    public void setIsDead(Boolean isDead) {
+        this.isDead = isDead;
     }
 
     public Integer getArmorClass() {
@@ -225,5 +257,13 @@ public class PlayerCharacter {
 
     public void setGeneralProficiencies(String generalProficiencies) {
         this.generalProficiencies = generalProficiencies;
+    }
+
+    public String getConditions() {
+        return conditions;
+    }
+
+    public void setConditions(String conditions) {
+        this.conditions = conditions;
     }
 }
