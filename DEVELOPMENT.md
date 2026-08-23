@@ -459,10 +459,10 @@ This document outlines the step-by-step development process for the AutoDM proje
 - **Require Repository Change:** True
 
 **Acceptance Criteria:**
-- [ ] REST endpoints manage player characters and character resources.
-- [ ] Characters are scoped to a campaign.
-- [ ] Resource updates persist across requests.
-- [ ] The server compiles and endpoints respond.
+- [x] REST endpoints manage player characters and character resources.
+- [x] Characters are scoped to a campaign.
+- [x] Resource updates persist across requests.
+- [x] The server compiles and endpoints respond.
 
 ### PROJECT-34: World and location service and REST controller
 **Objective:** Implement the world service and controller for managing locations, regions, settlements, POIs, travel, and party location.
