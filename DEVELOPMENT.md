@@ -627,10 +627,10 @@ This document outlines the step-by-step development process for the AutoDM proje
 - **Require Repository Change:** True
 
 **Acceptance Criteria:**
-- [ ] Navigation and clear page titles are present.
-- [ ] Routes exist for dashboard, campaigns, play, characters, quests, world, NPCs, encounters, history, and settings.
-- [ ] The app shell renders a navigation bar.
-- [ ] The application builds successfully.
+- [x] Navigation and clear page titles are present.
+- [x] Routes exist for dashboard, campaigns, play, characters, quests, world, NPCs, encounters, history, and settings.
+- [x] The app shell renders a navigation bar.
+- [x] The application builds successfully.
 
 ### PROJECT-46: Angular backend communication services
 **Objective:** Implement Angular services for REST communication with the backend and central state management.
