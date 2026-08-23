@@ -1,0 +1,124 @@
+<div class="dashboard-container">
+  <header class="dashboard-header">
+    <h1>Campaign Dashboard</h1>
+  </header>
+
+  @if (isLoading()) {
+    <div class="loading-state">
+      <p>Loading dashboard data...</p>
+    </div>
+  } @else if (hasActiveCampaign()) {
+    <div class="dashboard-grid">
+      <!-- Campaign Info Card -->
+      <section class="dashboard-card summary-card">
+        <h2>{{ activeCampaign()?.title }}</h2>
+        <p class="status-badge">{{ activeCampaign()?.status }}</p>
+        <p class="description">{{ activeCampaign()?.description || 'No description provided.' }}</p>
+
+        <div class="meta-info">
+          @if (currentLocation()) {
+            <p><strong>Current Location:</strong> {{ currentLocation()?.name }} ({{ currentLocation()?.type }})</p>
+          } @else {
+            <p><strong>Current Location:</strong> Unknown</p>
+          }
+          <p><strong>Created:</strong> {{ activeCampaign()?.creationDate | date }}</p>
+          <p><strong>Last Played:</strong> {{ activeCampaign()?.lastPlayedDate | date }}</p>
+        </div>
+
+        <div class="actions">
+          <button class="btn btn-primary" routerLink="/play">Continue Playing</button>
+        </div>
+      </section>
+
+      <!-- Active Encounter / Scene Card -->
+      <section class="dashboard-card scene-card">
+        <h2>Current Scene</h2>
+        @if (currentScene()) {
+          <div class="scene-info">
+            <p><strong>Status:</strong> {{ currentScene()?.status }}</p>
+            <div class="narrative-preview">
+              {{ currentScene()?.narrativeText }}
+            </div>
+            @if (currentScene()?.encounterId) {
+              <div class="encounter-alert">
+                <p>Active Encounter in Progress!</p>
+                <button class="btn btn-secondary" routerLink="/encounters">View Encounter</button>
+              </div>
+            }
+          </div>
+        } @else {
+          <p class="empty-state">No active scene information available.</p>
+        }
+      </section>
+
+      <!-- Characters Card -->
+      <section class="dashboard-card characters-card">
+        <h2>Active Party</h2>
+        @if (activeCharacters().length > 0) {
+          <ul class="item-list">
+            @for (char of activeCharacters(); track char.id) {
+              <li class="item-list-row">
+                <div class="char-info">
+                  <strong>{{ char.name }}</strong>
+                  <span class="sub-text">Level {{ char.level }} {{ char.characterClass }}</span>
+                </div>
+                <div class="hp-info">
+                  HP: {{ char.hitPoints }}/{{ char.maximumHitPoints }}
+                </div>
+              </li>
+            }
+          </ul>
+        } @else {
+          <p class="empty-state">No active characters in the party.</p>
+          <button class="btn btn-sm" routerLink="/characters">Manage Characters</button>
+        }
+      </section>
+
+      <!-- Quests Card -->
+      <section class="dashboard-card quests-card">
+        <h2>Active Quests</h2>
+        @if (activeQuests().length > 0) {
+          <ul class="item-list">
+            @for (quest of activeQuests(); track quest.id) {
+              <li class="item-list-row">
+                <div class="quest-info">
+                  <strong>{{ quest.title }}</strong>
+                  <span class="sub-text text-truncate">{{ quest.description }}</span>
+                </div>
+              </li>
+            }
+          </ul>
+        } @else {
+          <p class="empty-state">No active quests.</p>
+          <button class="btn btn-sm" routerLink="/quests">Manage Quests</button>
+        }
+      </section>
+
+      <!-- Recent Events Card -->
+      <section class="dashboard-card events-card">
+        <h2>Recent Events</h2>
+        @if (recentEvents().length > 0) {
+          <ul class="event-list">
+            @for (event of recentEvents(); track event.id) {
+              <li class="event-item">
+                <span class="event-time">{{ event.timestamp | date:'shortTime' }}</span>
+                <span class="event-type badge-{{ event.type.toLowerCase() }}">{{ event.type }}</span>
+                <span class="event-desc">{{ event.description }}</span>
+              </li>
+            }
+          </ul>
+        } @else {
+          <p class="empty-state">No recent events.</p>
+        }
+      </section>
+    </div>
+  } @else {
+    <div class="empty-state-container">
+      <h2>No Active Campaign</h2>
+      <p>Select a campaign to view its dashboard or create a new one to get started.</p>
+      <div class="actions">
+        <button class="btn btn-primary" routerLink="/campaigns">View Campaigns</button>
+      </div>
+    </div>
+  }
+</div>
