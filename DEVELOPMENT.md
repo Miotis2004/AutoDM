@@ -291,10 +291,10 @@ This document outlines the step-by-step development process for the AutoDM proje
 - **Require Repository Change:** True
 
 **Acceptance Criteria:**
-- [ ] The service supports conditions such as poisoned, stunned, frightened, unconscious, and restrained.
-- [ ] Conditions carry name, description, duration, source, and active state.
-- [ ] The service can activate, deactivate, and expire conditions by duration.
-- [ ] The service compiles and integrates with combat and character state.
+- [x] The service supports conditions such as poisoned, stunned, frightened, unconscious, and restrained.
+- [x] Conditions carry name, description, duration, source, and active state.
+- [x] The service can activate, deactivate, and expire conditions by duration.
+- [x] The service compiles and integrates with combat and character state.
 
 ### PROJECT-22: Rest and recovery service
 **Objective:** Build a service for short and long rest operations that restore health, clear selected conditions, and restore selected resources.
