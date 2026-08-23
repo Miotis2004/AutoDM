@@ -221,10 +221,10 @@ This document outlines the step-by-step development process for the AutoDM proje
 - **Require Repository Change:** True
 
 **Acceptance Criteria:**
-- [ ] The Session entity records campaign reference, start time, and optional end time.
-- [ ] Sessions can be started, resumed, and ended.
-- [ ] Session history can be queried per campaign.
-- [ ] Session state persists across application restarts.
+- [x] The Session entity records campaign reference, start time, and optional end time.
+- [x] Sessions can be started, resumed, and ended.
+- [x] Session history can be queried per campaign.
+- [x] Session state persists across application restarts.
 
 ### PROJECT-17: Event and history domain model and repository
 **Objective:** Implement the CampaignEvent entity for persistent recording of significant campaign events.
