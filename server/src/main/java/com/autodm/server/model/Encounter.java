@@ -34,11 +34,15 @@ public class Encounter {
 
     private Integer currentTurn;
 
+    private Long activeCombatantId;
+
     @Column(columnDefinition = "TEXT")
     private String notes;
 
     public Encounter() {
         this.status = EncounterStatus.PENDING;
+        // currentTurn tracks the global turn index or round. We'll use it for round number or total turns.
+        // Let's assume it tracks the round number.
         this.currentTurn = 1;
     }
 
@@ -88,6 +92,14 @@ public class Encounter {
 
     public void setCurrentTurn(Integer currentTurn) {
         this.currentTurn = currentTurn;
+    }
+
+    public Long getActiveCombatantId() {
+        return activeCombatantId;
+    }
+
+    public void setActiveCombatantId(Long activeCombatantId) {
+        this.activeCombatantId = activeCombatantId;
     }
 
     public String getNotes() {
