@@ -22,7 +22,7 @@ class NarrativeTemplateServiceTest {
     void testGeneratePlayerActionNarrative() {
         PlayerAction action = new PlayerAction();
         action.setCharacterId(1L);
-        action.setActionType("ATTACK");
+        action.setActionType(com.autodm.server.service.dm.PlayerActionType.ATTACK);
         action.setDescription("Attack the goblin with sword");
 
         NarrativeMessage message = service.generatePlayerActionNarrative(action);

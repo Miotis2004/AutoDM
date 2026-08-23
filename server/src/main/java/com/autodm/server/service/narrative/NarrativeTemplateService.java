@@ -15,7 +15,7 @@ import java.util.List;
 public class NarrativeTemplateService {
 
     public NarrativeMessage generatePlayerActionNarrative(PlayerAction action) {
-        String actionType = action.getActionType() != null ? action.getActionType() : "Unknown";
+        String actionType = action.getActionType() != null ? action.getActionType().name() : "UNKNOWN";
         String description = action.getDescription() != null ? action.getDescription() : "took an action";
 
         String text = String.format("Character %d performed %s: %s",
