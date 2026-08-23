@@ -501,10 +501,10 @@ This document outlines the step-by-step development process for the AutoDM proje
 - **Require Repository Change:** True
 
 **Acceptance Criteria:**
-- [ ] REST endpoints manage factions, relationships, and standing.
-- [ ] Reputation changes can be applied and persisted.
-- [ ] Factions are scoped to a campaign.
-- [ ] The server compiles and endpoints respond.
+- [x] REST endpoints manage factions, relationships, and standing.
+- [x] Reputation changes can be applied and persisted.
+- [x] Factions are scoped to a campaign.
+- [x] The server compiles and endpoints respond.
 
 ### PROJECT-37: Quest service and REST controller
 **Objective:** Implement the quest service and controller for managing quests, objectives, rewards, and quest state.
