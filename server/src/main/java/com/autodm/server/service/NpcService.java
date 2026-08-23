@@ -8,6 +8,8 @@ import com.autodm.server.repository.CampaignRepository;
 import com.autodm.server.repository.LocationRepository;
 import com.autodm.server.repository.NpcRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -74,7 +76,12 @@ public class NpcService {
 
         if (dto.getCurrentLocationId() != null) {
             Location location = locationRepository.findById(dto.getCurrentLocationId())
-                    .orElseThrow(() -> new IllegalArgumentException("Location not found"));
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Location not found"));
+
+            if (!location.getCampaign().getId().equals(npc.getCampaign().getId())) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Location does not belong to the same campaign");
+            }
+
             npc.setCurrentLocation(location);
         } else {
             npc.setCurrentLocation(null);

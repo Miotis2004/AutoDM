@@ -1,11 +1,15 @@
 package com.autodm.server.dto;
 
+import jakarta.validation.constraints.Min;
+
 public class CharacterResourceDto {
     private Long id;
     private Long playerCharacterId;
     private String name;
     private String resourceType;
+        @Min(value = 0, message = "Current value cannot be negative")
     private Integer currentValue;
+        @Min(value = 0, message = "Maximum value cannot be negative")
     private Integer maximumValue;
 
     public Long getId() {

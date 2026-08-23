@@ -2,11 +2,14 @@ package com.autodm.server.dto;
 
 import com.autodm.server.model.ItemCategory;
 
+import jakarta.validation.constraints.Min;
+
 public class ItemDto {
     private Long id;
     private String name;
     private String description;
     private ItemCategory category;
+        @Min(value = 0, message = "Quantity cannot be negative")
     private Integer quantity;
     private Integer value;
     private Boolean isEquipped;

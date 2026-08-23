@@ -6,6 +6,8 @@ import com.autodm.server.model.Faction;
 import com.autodm.server.repository.CampaignRepository;
 import com.autodm.server.repository.FactionRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -72,7 +74,10 @@ public class FactionService {
         if (dto.getAllyIds() != null) {
             for (Long allyId : dto.getAllyIds()) {
                 Faction ally = factionRepository.findById(allyId)
-                        .orElseThrow(() -> new IllegalArgumentException("Ally faction not found"));
+                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Ally faction not found"));
+                if (!ally.getCampaign().getId().equals(faction.getCampaign().getId())) {
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Ally faction does not belong to the same campaign");
+                }
                 faction.getAllies().add(ally);
             }
         }
@@ -81,7 +86,10 @@ public class FactionService {
         if (dto.getEnemyIds() != null) {
             for (Long enemyId : dto.getEnemyIds()) {
                 Faction enemy = factionRepository.findById(enemyId)
-                        .orElseThrow(() -> new IllegalArgumentException("Enemy faction not found"));
+                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Enemy faction not found"));
+                if (!enemy.getCampaign().getId().equals(faction.getCampaign().getId())) {
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Enemy faction does not belong to the same campaign");
+                }
                 faction.getEnemies().add(enemy);
             }
         }

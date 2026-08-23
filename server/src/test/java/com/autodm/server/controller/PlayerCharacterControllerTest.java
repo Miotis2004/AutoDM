@@ -5,10 +5,12 @@ import com.autodm.server.dto.PlayerCharacterDto;
 import com.autodm.server.service.PlayerCharacterService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Arrays;
@@ -95,11 +97,9 @@ class PlayerCharacterControllerTest {
 
     @Test
     void updateCharacter_NotFound() {
-        when(characterService.updateCharacter(eq(1L), any())).thenThrow(new IllegalArgumentException("Character not found"));
+        when(characterService.updateCharacter(eq(1L), any())).thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Character not found"));
 
-        ResponseEntity<PlayerCharacterDto> response = controller.updateCharacter(1L, new PlayerCharacterDto());
-
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertThrows(ResponseStatusException.class, () -> controller.updateCharacter(1L, new PlayerCharacterDto()));
     }
 
     @Test
@@ -137,11 +137,9 @@ class PlayerCharacterControllerTest {
 
     @Test
     void createResource_NotFound() {
-        when(characterService.createResource(eq(1L), any())).thenThrow(new IllegalArgumentException("Character not found"));
+        when(characterService.createResource(eq(1L), any())).thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Character not found"));
 
-        ResponseEntity<CharacterResourceDto> response = controller.createResource(1L, new CharacterResourceDto());
-
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertThrows(ResponseStatusException.class, () -> controller.createResource(1L, new CharacterResourceDto()));
     }
 
     @Test
@@ -159,11 +157,9 @@ class PlayerCharacterControllerTest {
 
     @Test
     void updateResource_NotFound() {
-        when(characterService.updateResource(eq(1L), any())).thenThrow(new IllegalArgumentException("Resource not found"));
+        when(characterService.updateResource(eq(1L), any())).thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Resource not found"));
 
-        ResponseEntity<CharacterResourceDto> response = controller.updateResource(1L, new CharacterResourceDto());
-
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertThrows(ResponseStatusException.class, () -> controller.updateResource(1L, new CharacterResourceDto()));
     }
 
     @Test

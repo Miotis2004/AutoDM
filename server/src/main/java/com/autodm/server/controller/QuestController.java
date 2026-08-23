@@ -7,6 +7,7 @@ import com.autodm.server.service.QuestService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -31,13 +32,13 @@ public class QuestController {
     }
 
     @PostMapping("/campaigns/{campaignId}/quests")
-    public ResponseEntity<QuestDto> createQuest(@PathVariable Long campaignId, @RequestBody QuestDto questDto) {
+    public ResponseEntity<QuestDto> createQuest(@PathVariable Long campaignId, @Valid @RequestBody QuestDto questDto) {
         questDto.setCampaignId(campaignId);
         return ResponseEntity.status(HttpStatus.CREATED).body(questService.createQuest(questDto));
     }
 
     @PutMapping("/quests/{id}")
-    public ResponseEntity<QuestDto> updateQuest(@PathVariable Long id, @RequestBody QuestDto questDto) {
+    public ResponseEntity<QuestDto> updateQuest(@PathVariable Long id, @Valid @RequestBody QuestDto questDto) {
         return ResponseEntity.ok(questService.updateQuest(id, questDto));
     }
 

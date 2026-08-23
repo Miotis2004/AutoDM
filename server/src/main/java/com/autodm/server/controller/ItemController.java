@@ -5,6 +5,7 @@ import com.autodm.server.service.ItemService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.List;
 import java.util.Map;
@@ -35,12 +36,12 @@ public class ItemController {
     }
 
     @PostMapping
-    public ResponseEntity<ItemDto> createItem(@RequestBody ItemDto dto) {
+    public ResponseEntity<ItemDto> createItem(@Valid @RequestBody ItemDto dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(itemService.createItem(dto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ItemDto> updateItem(@PathVariable Long id, @RequestBody ItemDto dto) {
+    public ResponseEntity<ItemDto> updateItem(@PathVariable Long id, @Valid @RequestBody ItemDto dto) {
         return ResponseEntity.ok(itemService.updateItem(id, dto));
     }
 

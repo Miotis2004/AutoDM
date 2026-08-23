@@ -5,9 +5,13 @@ import java.util.Map;
 /**
  * Represents an action taken by a player.
  */
+import jakarta.validation.constraints.NotNull;
+
 public class PlayerAction {
 
+        @NotNull(message = "Character ID is required")
     private Long characterId;
+        @NotNull(message = "Action type is required")
     private PlayerActionType actionType;
     private String description;
     private Map<String, Object> parameters;

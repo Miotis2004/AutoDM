@@ -5,6 +5,7 @@ import com.autodm.server.service.NpcService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -29,12 +30,12 @@ public class NpcController {
     }
 
     @PostMapping
-    public ResponseEntity<NpcDto> createNpc(@RequestBody NpcDto npcDto) {
+    public ResponseEntity<NpcDto> createNpc(@Valid @RequestBody NpcDto npcDto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(npcService.createNpc(npcDto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<NpcDto> updateNpc(@PathVariable Long id, @RequestBody NpcDto npcDto) {
+    public ResponseEntity<NpcDto> updateNpc(@PathVariable Long id, @Valid @RequestBody NpcDto npcDto) {
         return ResponseEntity.ok(npcService.updateNpc(id, npcDto));
     }
 

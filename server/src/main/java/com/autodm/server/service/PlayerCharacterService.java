@@ -9,6 +9,8 @@ import com.autodm.server.repository.CampaignRepository;
 import com.autodm.server.repository.CharacterResourceRepository;
 import com.autodm.server.repository.PlayerCharacterRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,7 +44,7 @@ public class PlayerCharacterService {
 
     public PlayerCharacterDto createCharacter(PlayerCharacterDto dto) {
         Campaign campaign = campaignRepository.findById(dto.getCampaignId())
-                .orElseThrow(() -> new IllegalArgumentException("Campaign not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Campaign not found"));
 
         PlayerCharacter character = new PlayerCharacter();
         character.setCampaign(campaign);
@@ -53,7 +55,7 @@ public class PlayerCharacterService {
 
     public PlayerCharacterDto updateCharacter(Long id, PlayerCharacterDto dto) {
         PlayerCharacter character = characterRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Character not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Character not found"));
 
         updateCharacterFromDto(character, dto);
         return convertToDto(characterRepository.save(character));
@@ -71,7 +73,7 @@ public class PlayerCharacterService {
 
     public CharacterResourceDto createResource(Long characterId, CharacterResourceDto dto) {
         PlayerCharacter character = characterRepository.findById(characterId)
-                .orElseThrow(() -> new IllegalArgumentException("Character not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Character not found"));
 
         CharacterResource resource = new CharacterResource();
         resource.setPlayerCharacter(character);
@@ -82,7 +84,7 @@ public class PlayerCharacterService {
 
     public CharacterResourceDto updateResource(Long resourceId, CharacterResourceDto dto) {
         CharacterResource resource = resourceRepository.findById(resourceId)
-                .orElseThrow(() -> new IllegalArgumentException("Resource not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Resource not found"));
 
         updateResourceFromDto(resource, dto);
         return convertToResourceDto(resourceRepository.save(resource));

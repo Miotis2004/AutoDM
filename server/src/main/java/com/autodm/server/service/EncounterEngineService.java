@@ -6,6 +6,8 @@ import com.autodm.server.model.EncounterStatus;
 import com.autodm.server.repository.CombatantRepository;
 import com.autodm.server.repository.EncounterRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Comparator;
@@ -38,10 +40,10 @@ public class EncounterEngineService {
     @Transactional
     public Encounter startEncounter(Long encounterId) {
         Encounter encounter = encounterRepository.findById(encounterId)
-                .orElseThrow(() -> new IllegalArgumentException("Encounter not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Encounter not found"));
 
         if (encounter.getStatus() != EncounterStatus.PENDING) {
-            throw new IllegalStateException("Encounter is already started or completed.");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Encounter is already started or completed.");
         }
 
         List<Combatant> combatants = combatantRepository.findByEncounterIdOrderByInitiativeDesc(encounterId);
@@ -81,10 +83,10 @@ public class EncounterEngineService {
     @Transactional
     public Encounter advanceTurn(Long encounterId) {
         Encounter encounter = encounterRepository.findById(encounterId)
-                .orElseThrow(() -> new IllegalArgumentException("Encounter not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Encounter not found"));
 
         if (encounter.getStatus() != EncounterStatus.ACTIVE) {
-            throw new IllegalStateException("Cannot advance turn. Encounter is not active.");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cannot advance turn. Encounter is not active.");
         }
 
         if (checkEncounterCompletion(encounterId)) {
@@ -166,10 +168,10 @@ public class EncounterEngineService {
     @Transactional
     public String executeCurrentTurn(Long encounterId) {
         Encounter encounter = encounterRepository.findById(encounterId)
-                .orElseThrow(() -> new IllegalArgumentException("Encounter not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Encounter not found"));
 
         if (encounter.getStatus() != EncounterStatus.ACTIVE) {
-            throw new IllegalStateException("Encounter is not active.");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Encounter is not active.");
         }
 
         Long activeCombatantId = encounter.getActiveCombatantId();
@@ -178,7 +180,7 @@ public class EncounterEngineService {
         }
 
         Combatant activeCombatant = combatantRepository.findById(activeCombatantId)
-                .orElseThrow(() -> new IllegalArgumentException("Active combatant not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Active combatant not found"));
 
         if (!activeCombatant.getIsPlayer() && !activeCombatant.getIsDefeated()) {
             return enemyBehaviorService.executeEnemyTurn(encounterId, activeCombatantId);
