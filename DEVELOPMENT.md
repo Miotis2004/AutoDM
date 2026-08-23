@@ -613,10 +613,10 @@ This document outlines the step-by-step development process for the AutoDM proje
 - **Require Repository Change:** True
 
 **Acceptance Criteria:**
-- [ ] A new SQLite database is created safely when none exists.
-- [ ] Existing campaign data is not destroyed during normal startup.
-- [ ] Schema creation runs idempotently.
-- [ ] The server starts cleanly with an empty and a pre-populated database.
+- [x] A new SQLite database is created safely when none exists.
+- [x] Existing campaign data is not destroyed during normal startup.
+- [x] Schema creation runs idempotently.
+- [x] The server starts cleanly with an empty and a pre-populated database.
 
 ### PROJECT-45: Angular app shell, routing, and navigation
 **Objective:** Build the Angular app shell with navigation, page titles, and logical routes for major application areas.
