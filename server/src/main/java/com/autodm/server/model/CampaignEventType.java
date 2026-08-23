@@ -9,5 +9,7 @@ public enum CampaignEventType {
     ITEM_ACQUISITION,
     QUEST_CHANGE,
     RELATIONSHIP_CHANGE,
-    SESSION_END
+    SESSION_END,
+    SHORT_REST,
+    LONG_REST
 }

@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface CombatantRepository extends JpaRepository<Combatant, Long> {
     List<Combatant> findByEncounterIdOrderByInitiativeDesc(Long encounterId);
+    List<Combatant> findByPlayerCharacterId(Long playerCharacterId);
 }
