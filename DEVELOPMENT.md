@@ -473,10 +473,10 @@ This document outlines the step-by-step development process for the AutoDM proje
 - **Require Repository Change:** True
 
 **Acceptance Criteria:**
-- [ ] REST endpoints manage world entities and travel relationships.
-- [ ] Discovered state and current party location are manageable.
-- [ ] Locations are usable by game-session logic.
-- [ ] The server compiles and endpoints respond.
+- [x] REST endpoints manage world entities and travel relationships.
+- [x] Discovered state and current party location are manageable.
+- [x] Locations are usable by game-session logic.
+- [x] The server compiles and endpoints respond.
 
 ### PROJECT-35: NPC service and REST controller
 **Objective:** Implement the NPC service and controller for managing NPCs and their relationships within a campaign.
