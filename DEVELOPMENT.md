@@ -277,10 +277,10 @@ This document outlines the step-by-step development process for the AutoDM proje
 - **Require Repository Change:** True
 
 **Acceptance Criteria:**
-- [ ] The service computes a total from a character statistic and modifier plus a generated roll.
-- [ ] The service compares the total against a difficulty and returns success or failure.
-- [ ] Results are consumable by Dungeon Master logic.
-- [ ] The service compiles and is usable by the resolution layer.
+- [x] The service computes a total from a character statistic and modifier plus a generated roll.
+- [x] The service compares the total against a difficulty and returns success or failure.
+- [x] Results are consumable by Dungeon Master logic.
+- [x] The service compiles and is usable by the resolution layer.
 
 ### PROJECT-21: Conditions and status effects service
 **Objective:** Build a service to apply, track, and expire reusable conditions and status effects.
