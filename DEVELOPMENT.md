@@ -529,10 +529,10 @@ This document outlines the step-by-step development process for the AutoDM proje
 - **Require Repository Change:** True
 
 **Acceptance Criteria:**
-- [ ] REST endpoints manage items, ownership, equipped state, and transfers.
-- [ ] Quantities are validated and cannot go negative where inappropriate.
-- [ ] Inventory state persists per campaign.
-- [ ] The server compiles and endpoints respond.
+- [x] REST endpoints manage items, ownership, equipped state, and transfers.
+- [x] Quantities are validated and cannot go negative where inappropriate.
+- [x] Inventory state persists per campaign.
+- [x] The server compiles and endpoints respond.
 
 ### PROJECT-39: Session service and REST controller
 **Objective:** Implement the session service and controller for starting, resuming, ending sessions, and viewing history.
