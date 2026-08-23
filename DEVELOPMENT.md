@@ -179,10 +179,10 @@ This document outlines the step-by-step development process for the AutoDM proje
 - **Require Repository Change:** True
 
 **Acceptance Criteria:**
-- [ ] The Quest entity supports active, completed, and failed states.
-- [ ] Quests contain one or more objectives with per-objective completion tracking.
-- [ ] Quest rewards, quest giver, related locations, and notes are stored.
-- [ ] Quest state persists and can be queried per campaign.
+- [x] The Quest entity supports active, completed, and failed states.
+- [x] Quests contain one or more objectives with per-objective completion tracking.
+- [x] Quest rewards, quest giver, related locations, and notes are stored.
+- [x] Quest state persists and can be queried per campaign.
 
 ### PROJECT-14: Item and inventory domain model and repository
 **Objective:** Implement Item and inventory ownership entities with categories, quantity, ownership, equipped state, descriptions, value, and transfers.
