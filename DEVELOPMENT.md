@@ -39,10 +39,10 @@ This document outlines the step-by-step development process for the AutoDM proje
 - **Require Repository Change:** True
 
 **Acceptance Criteria:**
-- [ ] The Angular application is created with Angular CLI version 22.
-- [ ] package.json pins Angular 22 core packages.
-- [ ] Routing and reactive forms modules are enabled.
-- [ ] The application builds successfully with the Angular production build.
+- [x] The Angular application is created with Angular CLI version 22.
+- [x] package.json pins Angular 22 core packages.
+- [x] Routing and reactive forms modules are enabled.
+- [x] The application builds successfully with the Angular production build.
 
 ### PROJECT-04: SQLite persistence configuration strategy
 **Objective:** Configure Spring Boot to use a local SQLite database via Spring Data JPA with a maintainable schema approach.
