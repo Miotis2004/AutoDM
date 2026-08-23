@@ -347,10 +347,10 @@ This document outlines the step-by-step development process for the AutoDM proje
 - **Require Repository Change:** True
 
 **Acceptance Criteria:**
-- [ ] Encounter generation can create encounters manually and via basic automated rules.
-- [ ] Generation considers party level or strength and available enemy definitions.
-- [ ] Difficulty can influence generated encounter composition.
-- [ ] Generated encounters can be instantiated into the encounter engine.
+- [x] Encounter generation can create encounters manually and via basic automated rules.
+- [x] Generation considers party level or strength and available enemy definitions.
+- [x] Difficulty can influence generated encounter composition.
+- [x] Generated encounters can be instantiated into the encounter engine.
 
 ### PROJECT-26: Attack and damage resolution
 **Objective:** Implement attack resolution and damage application including defense, damage types, and defeated transitions.
