@@ -6,6 +6,7 @@ import com.autodm.server.repository.CampaignEventRepository;
 import com.autodm.server.repository.CampaignRepository;
 import com.autodm.server.repository.SceneRepository;
 import com.autodm.server.service.narrative.NarrativeCategory;
+import com.autodm.server.service.EventService;
 import com.autodm.server.service.narrative.NarrativeMessage;
 import com.autodm.server.service.narrative.NarrativeTemplateService;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,6 +26,7 @@ class DeterministicDungeonMasterEngineTest {
     private CampaignEventRepository campaignEventRepository;
     private SceneRepository sceneRepository;
     private NarrativeTemplateService narrativeTemplateService;
+    private EventService eventService;
     private DeterministicDungeonMasterEngine engine;
 
     @BeforeEach
@@ -33,8 +35,14 @@ class DeterministicDungeonMasterEngineTest {
         campaignEventRepository = mock(CampaignEventRepository.class);
         sceneRepository = mock(SceneRepository.class);
         narrativeTemplateService = new NarrativeTemplateService();
-        engine = new DeterministicDungeonMasterEngine(campaignRepository, campaignEventRepository, sceneRepository, narrativeTemplateService);
+        eventService = mock(EventService.class);
+        engine = new DeterministicDungeonMasterEngine(campaignRepository, campaignEventRepository, sceneRepository, narrativeTemplateService, eventService);
         when(sceneRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
+        when(eventService.logEvent(any(), any(), anyString())).thenAnswer(invocation ->
+            new CampaignEvent((Campaign) invocation.getArgument(0),
+                              (com.autodm.server.model.CampaignEventType) invocation.getArgument(1),
+                              (String) invocation.getArgument(2))
+        );
     }
 
     @Test
@@ -64,14 +72,13 @@ class DeterministicDungeonMasterEngineTest {
         assertEquals(3, response.getNarrativeLog().size());
         assertEquals(NarrativeCategory.PLAYER_ACTION, response.getNarrativeLog().get(0).getCategory());
         assertEquals(NarrativeCategory.DM_NARRATION, response.getNarrativeLog().get(1).getCategory());
-        assertEquals(NarrativeCategory.DM_NARRATION, response.getNarrativeLog().get(2).getCategory()); // DISCOVERY event maps to DM_NARRATION
+        assertEquals(NarrativeCategory.COMBAT_EVENT, response.getNarrativeLog().get(2).getCategory()); // COMBAT event maps to COMBAT_EVENT
 
-        ArgumentCaptor<CampaignEvent> eventCaptor = ArgumentCaptor.forClass(CampaignEvent.class);
-        verify(campaignEventRepository, times(1)).save(eventCaptor.capture());
+        ArgumentCaptor<com.autodm.server.model.CampaignEventType> typeCaptor = ArgumentCaptor.forClass(com.autodm.server.model.CampaignEventType.class);
+        verify(eventService, times(1)).logEvent(eq(campaign), typeCaptor.capture(), anyString());
 
-        CampaignEvent savedEvent = eventCaptor.getValue();
-        assertEquals(campaign, savedEvent.getCampaign());
-        assertTrue(savedEvent.getDescription().contains("Attack the goblin with sword"));
+        com.autodm.server.model.CampaignEventType savedType = typeCaptor.getValue();
+        assertEquals(com.autodm.server.model.CampaignEventType.COMBAT, savedType);
 
         SceneInfo scene = response.getUpdatedScene();
         assertNotNull(scene);
