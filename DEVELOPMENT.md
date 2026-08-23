@@ -599,10 +599,10 @@ This document outlines the step-by-step development process for the AutoDM proje
 - **Require Repository Change:** True
 
 **Acceptance Criteria:**
-- [ ] CORS is configured to allow the local Angular dev server.
-- [ ] The backend runs as a standalone local process.
-- [ ] The backend exposes the REST API on a stable local port.
-- [ ] The server compiles and accepts cross-origin requests from the frontend.
+- [x] CORS is configured to allow the local Angular dev server.
+- [x] The backend runs as a standalone local process.
+- [x] The backend exposes the REST API on a stable local port.
+- [x] The server compiles and accepts cross-origin requests from the frontend.
 
 ### PROJECT-44: Safe database initialization on startup
 **Objective:** Ensure the application initializes a new local SQLite database safely when none exists without destroying existing data.
