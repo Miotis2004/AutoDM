@@ -669,10 +669,10 @@ This document outlines the step-by-step development process for the AutoDM proje
 - **Require Repository Change:** True
 
 **Acceptance Criteria:**
-- [ ] Campaign creation and editing forms are provided.
-- [ ] Archive/delete actions include destructive-action confirmations.
-- [ ] Active campaign selection is supported.
-- [ ] The application builds successfully.
+- [x] Campaign creation and editing forms are provided.
+- [x] Archive/delete actions include destructive-action confirmations.
+- [x] Active campaign selection is supported.
+- [x] The application builds successfully.
 
 ### PROJECT-49: World, NPC, quest, faction, item, and creature management screens
 **Objective:** Build management screens for characters, NPCs, locations, quests, factions, inventory/items, creature templates, and campaign history.
