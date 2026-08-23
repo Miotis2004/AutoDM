@@ -445,10 +445,10 @@ This document outlines the step-by-step development process for the AutoDM proje
 - **Require Repository Change:** True
 
 **Acceptance Criteria:**
-- [ ] REST endpoints support creating, editing, archiving, deleting, and selecting campaigns.
-- [ ] The controller is thin and delegates to the campaign service.
-- [ ] Campaigns expose title, description, status, dates, and notes via DTOs.
-- [ ] The server compiles and endpoints respond.
+- [x] REST endpoints support creating, editing, archiving, deleting, and selecting campaigns.
+- [x] The controller is thin and delegates to the campaign service.
+- [x] Campaigns expose title, description, status, dates, and notes via DTOs.
+- [x] The server compiles and endpoints respond.
 
 ### PROJECT-33: Character service and REST controller
 **Objective:** Implement the character service and controller for managing player characters and their resources within a campaign.
