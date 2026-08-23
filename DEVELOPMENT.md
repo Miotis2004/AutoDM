@@ -109,10 +109,10 @@ This document outlines the step-by-step development process for the AutoDM proje
 - **Require Repository Change:** True
 
 **Acceptance Criteria:**
-- [ ] The PlayerCharacter entity stores name, ancestry, class, level, background, alignment, hit points, maximum hit points, armor class, and movement.
-- [ ] The entity supports ability scores, saving throws, skills, and proficiency information.
-- [ ] A JPA repository interface for PlayerCharacter exists and is owned by a campaign.
-- [ ] Multiple characters can be associated with a single campaign.
+- [x] The PlayerCharacter entity stores name, ancestry, class, level, background, alignment, hit points, maximum hit points, armor class, and movement.
+- [x] The entity supports ability scores, saving throws, skills, and proficiency information.
+- [x] A JPA repository interface for PlayerCharacter exists and is owned by a campaign.
+- [x] Multiple characters can be associated with a single campaign.
 
 ### PROJECT-09: Character resources model
 **Objective:** Model persistent character resources including health, temporary health, limited-use abilities, spell/power resources, ammunition, consumables, currency, conditions, and death state.
