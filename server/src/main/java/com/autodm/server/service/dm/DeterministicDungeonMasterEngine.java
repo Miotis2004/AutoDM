@@ -42,6 +42,52 @@ public class DeterministicDungeonMasterEngine implements DungeonMasterEngine {
         Campaign campaign = campaignRepository.findById(campaignId)
                 .orElseThrow(() -> new IllegalArgumentException("Campaign not found: " + campaignId));
 
+        SceneInfo updatedScene = getCurrentScene(campaignId);
+
+        // Validation logic based on ActionType and Game State
+        if (action.getActionType() == PlayerActionType.TRAVEL && updatedScene.getEncounterId() != null) {
+            String errorNarrative = "You cannot travel while in an active encounter.";
+            List<NarrativeMessage> errorLog = new ArrayList<>();
+            errorLog.add(narrativeTemplateService.generateSystemEventNarrative("Invalid action: " + action.getActionType()));
+            errorLog.add(narrativeTemplateService.generateDmNarration(errorNarrative));
+
+            return new ActionResponse(
+                    false,
+                    errorNarrative,
+                    errorLog,
+                    Collections.singletonList("Action validation failed"),
+                    updatedScene
+            );
+        }
+        if (action.getActionType() == PlayerActionType.REST && updatedScene.getEncounterId() != null) {
+            String errorNarrative = "You cannot rest while in an active encounter.";
+            List<NarrativeMessage> errorLog = new ArrayList<>();
+            errorLog.add(narrativeTemplateService.generateSystemEventNarrative("Invalid action: " + action.getActionType()));
+            errorLog.add(narrativeTemplateService.generateDmNarration(errorNarrative));
+
+            return new ActionResponse(
+                    false,
+                    errorNarrative,
+                    errorLog,
+                    Collections.singletonList("Action validation failed"),
+                    updatedScene
+            );
+        }
+        if (action.getActionType() == PlayerActionType.UNKNOWN) {
+            String errorNarrative = "I don't understand that action.";
+            List<NarrativeMessage> errorLog = new ArrayList<>();
+            errorLog.add(narrativeTemplateService.generateSystemEventNarrative("Invalid action: UNKNOWN"));
+            errorLog.add(narrativeTemplateService.generateDmNarration(errorNarrative));
+
+            return new ActionResponse(
+                    false,
+                    errorNarrative,
+                    errorLog,
+                    Collections.singletonList("Action validation failed"),
+                    updatedScene
+            );
+        }
+
         // Basic deterministic handling
         // We'll log the action as a generic discovery or system event for now
         String narrative = "You attempted to " + action.getDescription() + ". It was somewhat successful.";
@@ -50,7 +96,6 @@ public class DeterministicDungeonMasterEngine implements DungeonMasterEngine {
                 "Player character " + action.getCharacterId() + " took action: " + action.getActionType() + " - " + action.getDescription());
         campaignEventRepository.save(event);
 
-        SceneInfo updatedScene = getCurrentScene(campaignId);
         updatedScene.setNarrative(narrative);
 
         List<NarrativeMessage> narrativeLog = new ArrayList<>();

@@ -49,7 +49,7 @@ class DeterministicDungeonMasterEngineTest {
 
         PlayerAction action = new PlayerAction();
         action.setCharacterId(10L);
-        action.setActionType("ATTACK");
+        action.setActionType(PlayerActionType.ATTACK);
         action.setDescription("Attack the goblin with sword");
 
         // Act
@@ -76,6 +76,101 @@ class DeterministicDungeonMasterEngineTest {
         SceneInfo scene = response.getUpdatedScene();
         assertNotNull(scene);
         assertEquals("Campaign: Test Campaign", scene.getTitle());
+    }
+
+    @Test
+    void testHandleAction_RejectsTravelInEncounter() {
+        // Arrange
+        Long campaignId = 1L;
+        Campaign campaign = new Campaign();
+        campaign.setId(campaignId);
+        campaign.setTitle("Test Campaign");
+
+        com.autodm.server.model.Scene scene = new com.autodm.server.model.Scene();
+        scene.setCampaign(campaign);
+        scene.setStatus(com.autodm.server.model.SceneStatus.ACTIVE);
+
+        com.autodm.server.model.Encounter encounter = new com.autodm.server.model.Encounter();
+        encounter.setId(100L);
+        scene.setActiveEncounter(encounter);
+
+        campaign.setCurrentScene(scene);
+
+        when(campaignRepository.findById(campaignId)).thenReturn(Optional.of(campaign));
+
+        PlayerAction action = new PlayerAction();
+        action.setCharacterId(10L);
+        action.setActionType(PlayerActionType.TRAVEL);
+        action.setDescription("Travel away");
+
+        // Act
+        ActionResponse response = engine.handleAction(campaignId, action);
+
+        // Assert
+        assertNotNull(response);
+        assertFalse(response.isSuccess());
+        assertTrue(response.getNarrative().contains("You cannot travel while in an active encounter."));
+        assertEquals(2, response.getNarrativeLog().size());
+    }
+
+    @Test
+    void testHandleAction_RejectsRestInEncounter() {
+        // Arrange
+        Long campaignId = 1L;
+        Campaign campaign = new Campaign();
+        campaign.setId(campaignId);
+        campaign.setTitle("Test Campaign");
+
+        com.autodm.server.model.Scene scene = new com.autodm.server.model.Scene();
+        scene.setCampaign(campaign);
+        scene.setStatus(com.autodm.server.model.SceneStatus.ACTIVE);
+
+        com.autodm.server.model.Encounter encounter = new com.autodm.server.model.Encounter();
+        encounter.setId(100L);
+        scene.setActiveEncounter(encounter);
+
+        campaign.setCurrentScene(scene);
+
+        when(campaignRepository.findById(campaignId)).thenReturn(Optional.of(campaign));
+
+        PlayerAction action = new PlayerAction();
+        action.setCharacterId(10L);
+        action.setActionType(PlayerActionType.REST);
+        action.setDescription("Take a short rest");
+
+        // Act
+        ActionResponse response = engine.handleAction(campaignId, action);
+
+        // Assert
+        assertNotNull(response);
+        assertFalse(response.isSuccess());
+        assertTrue(response.getNarrative().contains("You cannot rest while in an active encounter."));
+        assertEquals(2, response.getNarrativeLog().size());
+    }
+
+    @Test
+    void testHandleAction_RejectsUnknown() {
+        // Arrange
+        Long campaignId = 1L;
+        Campaign campaign = new Campaign();
+        campaign.setId(campaignId);
+        campaign.setTitle("Test Campaign");
+
+        when(campaignRepository.findById(campaignId)).thenReturn(Optional.of(campaign));
+
+        PlayerAction action = new PlayerAction();
+        action.setCharacterId(10L);
+        action.setActionType(PlayerActionType.UNKNOWN);
+        action.setDescription("some weird action");
+
+        // Act
+        ActionResponse response = engine.handleAction(campaignId, action);
+
+        // Assert
+        assertNotNull(response);
+        assertFalse(response.isSuccess());
+        assertTrue(response.getNarrative().contains("I don't understand that action."));
+        assertEquals(2, response.getNarrativeLog().size());
     }
 
     @Test

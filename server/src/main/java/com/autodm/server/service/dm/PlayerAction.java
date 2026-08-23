@@ -8,16 +8,27 @@ import java.util.Map;
 public class PlayerAction {
 
     private Long characterId;
-    private String actionType;
+    private PlayerActionType actionType;
     private String description;
     private Map<String, Object> parameters;
 
     public PlayerAction() {
     }
 
-    public PlayerAction(Long characterId, String actionType, String description, Map<String, Object> parameters) {
+    public PlayerAction(Long characterId, PlayerActionType actionType, String description, Map<String, Object> parameters) {
         this.characterId = characterId;
         this.actionType = actionType;
+        this.description = description;
+        this.parameters = parameters;
+    }
+
+    public PlayerAction(Long characterId, String actionTypeString, String description, Map<String, Object> parameters) {
+        this.characterId = characterId;
+        try {
+            this.actionType = PlayerActionType.valueOf(actionTypeString);
+        } catch (IllegalArgumentException | NullPointerException e) {
+            this.actionType = PlayerActionType.UNKNOWN;
+        }
         this.description = description;
         this.parameters = parameters;
     }
@@ -30,11 +41,11 @@ public class PlayerAction {
         this.characterId = characterId;
     }
 
-    public String getActionType() {
+    public PlayerActionType getActionType() {
         return actionType;
     }
 
-    public void setActionType(String actionType) {
+    public void setActionType(PlayerActionType actionType) {
         this.actionType = actionType;
     }
 
