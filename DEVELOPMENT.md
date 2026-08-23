@@ -25,10 +25,10 @@ This document outlines the step-by-step development process for the AutoDM proje
 - **Require Repository Change:** True
 
 **Acceptance Criteria:**
-- [ ] The Maven Wrapper files (mvnw, mvnw.cmd, and .mvn wrapper) are present in server/.
-- [ ] pom.xml declares Java 21 and Spring Boot parent with spring-boot-starter-web and spring-boot-starter-data-jpa.
-- [ ] A Spring Boot main application class exists and the project compiles with the Maven Wrapper.
-- [ ] The server starts and shuts down cleanly with no database configured yet.
+- [x] The Maven Wrapper files (mvnw, mvnw.cmd, and .mvn wrapper) are present in server/.
+- [x] pom.xml declares Java 21 and Spring Boot parent with spring-boot-starter-web and spring-boot-starter-data-jpa.
+- [x] A Spring Boot main application class exists and the project compiles with the Maven Wrapper.
+- [x] The server starts and shuts down cleanly with no database configured yet.
 
 ### PROJECT-03: Angular 22 client scaffold
 **Objective:** Create the Angular 22 application in client/ with TypeScript, routing, and forms enabled.
