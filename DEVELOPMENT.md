@@ -53,10 +53,10 @@ This document outlines the step-by-step development process for the AutoDM proje
 - **Require Repository Change:** True
 
 **Acceptance Criteria:**
-- [ ] A SQLite JDBC driver dependency is declared in pom.xml.
-- [ ] application.properties configures a SQLite datasource URL pointing to a local file.
-- [ ] JPA ddl-auto and dialect settings are configured for SQLite.
-- [ ] The server starts and can open the SQLite database file.
+- [x] A SQLite JDBC driver dependency is declared in pom.xml.
+- [x] application.properties configures a SQLite datasource URL pointing to a local file.
+- [x] JPA ddl-auto and dialect settings are configured for SQLite.
+- [x] The server starts and can open the SQLite database file.
 
 ### PROJECT-05: Cross-platform local storage path handling
 **Objective:** Make the SQLite database path application-relative and configurable for Windows, macOS, and Linux.
