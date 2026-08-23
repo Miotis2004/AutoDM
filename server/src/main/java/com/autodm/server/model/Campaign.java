@@ -40,6 +40,10 @@ public class Campaign {
     @JoinColumn(name = "current_location_id")
     private Location currentLocation;
 
+    @ManyToOne
+    @JoinColumn(name = "current_scene_id")
+    private Scene currentScene;
+
     public Campaign() {
         this.creationDate = LocalDateTime.now();
         this.status = CampaignStatus.ACTIVE;
@@ -107,5 +111,13 @@ public class Campaign {
 
     public void setCurrentLocation(Location currentLocation) {
         this.currentLocation = currentLocation;
+    }
+
+    public Scene getCurrentScene() {
+        return currentScene;
+    }
+
+    public void setCurrentScene(Scene currentScene) {
+        this.currentScene = currentScene;
     }
 }

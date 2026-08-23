@@ -21,8 +21,9 @@ public class Encounter {
     @JoinColumn(name = "campaign_id", nullable = false)
     private Campaign campaign;
 
-    // A scene might be represented as an entity later, for now we can track an ID or name
-    private Long sceneId;
+    @ManyToOne
+    @JoinColumn(name = "scene_id")
+    private Scene scene;
 
     @ManyToOne
     @JoinColumn(name = "location_id")
@@ -62,12 +63,12 @@ public class Encounter {
         this.campaign = campaign;
     }
 
-    public Long getSceneId() {
-        return sceneId;
+    public Scene getScene() {
+        return scene;
     }
 
-    public void setSceneId(Long sceneId) {
-        this.sceneId = sceneId;
+    public void setScene(Scene scene) {
+        this.scene = scene;
     }
 
     public Location getLocation() {
