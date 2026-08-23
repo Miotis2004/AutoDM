@@ -235,10 +235,10 @@ This document outlines the step-by-step development process for the AutoDM proje
 - **Require Repository Change:** True
 
 **Acceptance Criteria:**
-- [ ] The CampaignEvent entity records event type, timestamp, campaign reference, and a text or structured description.
-- [ ] Event types cover session start, location entry, discovery, combat, damage, item acquisition, quest changes, relationship changes, and session end.
-- [ ] Events can be listed and inspected per campaign.
-- [ ] Event data persists across sessions.
+- [x] The CampaignEvent entity records event type, timestamp, campaign reference, and a text or structured description.
+- [x] Event types cover session start, location entry, discovery, combat, damage, item acquisition, quest changes, relationship changes, and session end.
+- [x] Events can be listed and inspected per campaign.
+- [x] Event data persists across sessions.
 
 ### PROJECT-18: Encounter, combatant, and condition domain models and repositories
 **Objective:** Implement encounter, combatant, and condition entities supporting turn-based combat and status effects.
