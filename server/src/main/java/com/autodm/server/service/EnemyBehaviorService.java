@@ -15,11 +15,11 @@ import java.util.stream.Collectors;
 public class EnemyBehaviorService {
 
     private final CombatantRepository combatantRepository;
-    private final DiceService diceService;
+    private final CombatResolutionService combatResolutionService;
 
-    public EnemyBehaviorService(CombatantRepository combatantRepository, DiceService diceService) {
+    public EnemyBehaviorService(CombatantRepository combatantRepository, CombatResolutionService combatResolutionService) {
         this.combatantRepository = combatantRepository;
-        this.diceService = diceService;
+        this.combatResolutionService = combatResolutionService;
     }
 
     /**
@@ -65,50 +65,7 @@ public class EnemyBehaviorService {
             damageNotation = template.getDamage() != null ? template.getDamage() : "1d4";
         }
 
-        // Determine Target AC
-        int targetAc = 10;
-        PlayerCharacter pc = target.getPlayerCharacter();
-        if (pc != null && pc.getArmorClass() != null) {
-            targetAc = pc.getArmorClass();
-        }
-
-        RollResult attackRollResult = diceService.roll(1, 20, attackBonus);
-        int attackTotal = attackRollResult.getTotal();
-
-        StringBuilder sb = new StringBuilder();
-        sb.append(enemy.getName()).append(" attacks ").append(target.getName()).append(". ");
-        sb.append("Roll: ").append(attackRollResult.getRolls().get(0)).append(" + ").append(attackBonus).append(" = ").append(attackTotal).append(". ");
-
-        if (attackTotal >= targetAc) {
-            // Hit!
-            RollResult damageRollResult;
-            try {
-                damageRollResult = diceService.roll(damageNotation);
-            } catch (Exception e) {
-                // Fallback if notation is invalid
-                damageRollResult = diceService.roll(1, 4, 0);
-            }
-            int damage = damageRollResult.getTotal();
-
-            sb.append("Hit! ").append("Deals ").append(damage).append(" damage.");
-
-            int newHp = target.getHitPoints() - damage;
-            target.setHitPoints(newHp);
-
-            if (newHp <= 0) {
-                target.setHitPoints(0);
-                target.setIsDefeated(true);
-                sb.append(" ").append(target.getName()).append(" is defeated!");
-                if (pc != null) {
-                    pc.setIsUnconscious(true); // Simplified condition
-                }
-            }
-
-            combatantRepository.save(target);
-        } else {
-            sb.append("Misses (AC ").append(targetAc).append(").");
-        }
-
-        return sb.toString();
+        AttackResult result = combatResolutionService.resolveAttack(enemy, target, attackBonus, damageNotation);
+        return result.getDescription();
     }
 }

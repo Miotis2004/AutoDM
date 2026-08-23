@@ -28,7 +28,7 @@ class EnemyBehaviorServiceTest {
     private CombatantRepository combatantRepository;
 
     @Mock
-    private DiceService diceService;
+    private CombatResolutionService combatResolutionService;
 
     @InjectMocks
     private EnemyBehaviorService enemyBehaviorService;
@@ -62,60 +62,17 @@ class EnemyBehaviorServiceTest {
     }
 
     @Test
-    void testExecuteTurnHit() {
+    void testExecuteTurnPerformsAttack() {
         when(combatantRepository.findById(1L)).thenReturn(Optional.of(enemy));
         when(combatantRepository.findByEncounterIdOrderByInitiativeDesc(any())).thenReturn(List.of(player));
 
-        // Attack roll: 12 + 4 = 16 (Hits AC 15)
-        when(diceService.roll(1, 20, 4)).thenReturn(new RollResult(16, List.of(12), 4));
-
-        // Damage roll: 5 total
-        when(diceService.roll("1d6+2")).thenReturn(new RollResult(5, List.of(3), 2));
+        AttackResult attackResult = new AttackResult(true, 16, 5, false, "Goblin attacks Fighter. Roll: 12 + 4 = 16. Hit! Deals 5 damage.");
+        when(combatResolutionService.resolveAttack(enemy, player, 4, "1d6+2")).thenReturn(attackResult);
 
         String result = enemyBehaviorService.executeEnemyTurn(10L, 1L);
 
-        assertTrue(result.contains("Hit!"));
-        assertTrue(result.contains("Deals 5 damage"));
-        assertEquals(5, player.getHitPoints());
-        assertFalse(player.getIsDefeated());
-        verify(combatantRepository).save(player);
-    }
-
-    @Test
-    void testExecuteTurnMiss() {
-        when(combatantRepository.findById(1L)).thenReturn(Optional.of(enemy));
-        when(combatantRepository.findByEncounterIdOrderByInitiativeDesc(any())).thenReturn(List.of(player));
-
-        // Attack roll: 8 + 4 = 12 (Misses AC 15)
-        when(diceService.roll(1, 20, 4)).thenReturn(new RollResult(12, List.of(8), 4));
-
-        String result = enemyBehaviorService.executeEnemyTurn(10L, 1L);
-
-        assertTrue(result.contains("Misses"));
-        assertEquals(10, player.getHitPoints());
-        verify(combatantRepository, never()).save(any());
-    }
-
-    @Test
-    void testExecuteTurnDefeatsTarget() {
-        player.setHitPoints(3);
-
-        when(combatantRepository.findById(1L)).thenReturn(Optional.of(enemy));
-        when(combatantRepository.findByEncounterIdOrderByInitiativeDesc(any())).thenReturn(List.of(player));
-
-        // Attack hits
-        when(diceService.roll(1, 20, 4)).thenReturn(new RollResult(16, List.of(12), 4));
-
-        // Damage: 5 total
-        when(diceService.roll("1d6+2")).thenReturn(new RollResult(5, List.of(3), 2));
-
-        String result = enemyBehaviorService.executeEnemyTurn(10L, 1L);
-
-        assertTrue(result.contains("is defeated!"));
-        assertEquals(0, player.getHitPoints());
-        assertTrue(player.getIsDefeated());
-        assertTrue(player.getPlayerCharacter().getIsUnconscious());
-        verify(combatantRepository).save(player);
+        assertEquals("Goblin attacks Fighter. Roll: 12 + 4 = 16. Hit! Deals 5 damage.", result);
+        verify(combatResolutionService).resolveAttack(enemy, player, 4, "1d6+2");
     }
 
     @Test
@@ -127,6 +84,6 @@ class EnemyBehaviorServiceTest {
         String result = enemyBehaviorService.executeEnemyTurn(10L, 1L);
 
         assertTrue(result.contains("finds no valid targets"));
-        verify(diceService, never()).roll(anyInt(), anyInt(), anyInt());
+        verify(combatResolutionService, never()).resolveAttack(any(), any(), anyInt(), anyString());
     }
 }
