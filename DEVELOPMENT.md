@@ -95,10 +95,10 @@ This document outlines the step-by-step development process for the AutoDM proje
 - **Require Repository Change:** True
 
 **Acceptance Criteria:**
-- [ ] The Campaign entity stores title, description, status, creation date, last-played date, and notes.
-- [ ] A JPA repository interface for Campaign exists.
-- [ ] Campaigns can be created, read, updated, and deleted through the repository.
-- [ ] The server compiles with the campaign persistence layer.
+- [x] The Campaign entity stores title, description, status, creation date, last-played date, and notes.
+- [x] A JPA repository interface for Campaign exists.
+- [x] Campaigns can be created, read, updated, and deleted through the repository.
+- [x] The server compiles with the campaign persistence layer.
 
 ### PROJECT-08: Player character domain model and repository
 **Objective:** Implement the PlayerCharacter entity with name, ancestry, class, level, background, alignment, and core combat stats.
