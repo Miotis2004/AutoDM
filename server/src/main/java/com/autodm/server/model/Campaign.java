@@ -7,6 +7,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Column;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.EnumType;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
 import java.time.LocalDateTime;
 
 @Entity
@@ -33,6 +35,10 @@ public class Campaign {
 
     @Column(columnDefinition = "TEXT")
     private String notes;
+
+    @ManyToOne
+    @JoinColumn(name = "current_location_id")
+    private Location currentLocation;
 
     public Campaign() {
         this.creationDate = LocalDateTime.now();
@@ -93,5 +99,13 @@ public class Campaign {
 
     public void setNotes(String notes) {
         this.notes = notes;
+    }
+
+    public Location getCurrentLocation() {
+        return currentLocation;
+    }
+
+    public void setCurrentLocation(Location currentLocation) {
+        this.currentLocation = currentLocation;
     }
 }
