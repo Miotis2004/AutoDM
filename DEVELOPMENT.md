@@ -207,10 +207,10 @@ This document outlines the step-by-step development process for the AutoDM proje
 - **Require Repository Change:** True
 
 **Acceptance Criteria:**
-- [ ] The creature template entity stores name, description, health, defense, attack, damage, initiative modifier, and behavior notes.
-- [ ] Templates are reusable and campaign-scoped.
-- [ ] Campaigns can instantiate enemies from templates.
-- [ ] Creature templates can be created and listed.
+- [x] The creature template entity stores name, description, health, defense, attack, damage, initiative modifier, and behavior notes.
+- [x] Templates are reusable and campaign-scoped.
+- [x] Campaigns can instantiate enemies from templates.
+- [x] Creature templates can be created and listed.
 
 ### PROJECT-16: Session domain model and repository
 **Objective:** Implement the Session entity linking to a campaign and recording start/end times and event references.
