@@ -19,13 +19,16 @@ public class EncounterEngineService {
     private final EncounterRepository encounterRepository;
     private final CombatantRepository combatantRepository;
     private final DiceService diceService;
+    private final EnemyBehaviorService enemyBehaviorService;
 
     public EncounterEngineService(EncounterRepository encounterRepository,
                                   CombatantRepository combatantRepository,
-                                  DiceService diceService) {
+                                  DiceService diceService,
+                                  EnemyBehaviorService enemyBehaviorService) {
         this.encounterRepository = encounterRepository;
         this.combatantRepository = combatantRepository;
         this.diceService = diceService;
+        this.enemyBehaviorService = enemyBehaviorService;
     }
 
     /**
@@ -154,5 +157,33 @@ public class EncounterEngineService {
                 .allMatch(Combatant::getIsDefeated);
 
         return allPlayersDefeated || allEnemiesDefeated;
+    }
+
+    /**
+     * Executes the current turn if it belongs to an enemy.
+     * @return A message describing the action taken, or null if player's turn.
+     */
+    @Transactional
+    public String executeCurrentTurn(Long encounterId) {
+        Encounter encounter = encounterRepository.findById(encounterId)
+                .orElseThrow(() -> new IllegalArgumentException("Encounter not found"));
+
+        if (encounter.getStatus() != EncounterStatus.ACTIVE) {
+            throw new IllegalStateException("Encounter is not active.");
+        }
+
+        Long activeCombatantId = encounter.getActiveCombatantId();
+        if (activeCombatantId == null) {
+            return null;
+        }
+
+        Combatant activeCombatant = combatantRepository.findById(activeCombatantId)
+                .orElseThrow(() -> new IllegalArgumentException("Active combatant not found"));
+
+        if (!activeCombatant.getIsPlayer() && !activeCombatant.getIsDefeated()) {
+            return enemyBehaviorService.executeEnemyTurn(encounterId, activeCombatantId);
+        }
+
+        return null;
     }
 }

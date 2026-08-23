@@ -32,6 +32,9 @@ class EncounterEngineServiceTest {
     @Mock
     private DiceService diceService;
 
+    @Mock
+    private EnemyBehaviorService enemyBehaviorService;
+
     @InjectMocks
     private EncounterEngineService encounterEngineService;
 
@@ -172,5 +175,34 @@ class EncounterEngineServiceTest {
         Encounter advanced = encounterEngineService.advanceTurn(1L);
 
         assertEquals(EncounterStatus.COMPLETED, advanced.getStatus());
+    }
+
+    @Test
+    void testExecuteCurrentTurnEnemy() {
+        encounter.setStatus(EncounterStatus.ACTIVE);
+        encounter.setActiveCombatantId(c2.getId());
+
+        when(encounterRepository.findById(1L)).thenReturn(Optional.of(encounter));
+        when(combatantRepository.findById(c2.getId())).thenReturn(Optional.of(c2));
+        when(enemyBehaviorService.executeEnemyTurn(1L, c2.getId())).thenReturn("Goblin attacks Fighter. Hit!");
+
+        String result = encounterEngineService.executeCurrentTurn(1L);
+
+        assertEquals("Goblin attacks Fighter. Hit!", result);
+        verify(enemyBehaviorService, times(1)).executeEnemyTurn(1L, c2.getId());
+    }
+
+    @Test
+    void testExecuteCurrentTurnPlayer() {
+        encounter.setStatus(EncounterStatus.ACTIVE);
+        encounter.setActiveCombatantId(c1.getId());
+
+        when(encounterRepository.findById(1L)).thenReturn(Optional.of(encounter));
+        when(combatantRepository.findById(c1.getId())).thenReturn(Optional.of(c1));
+
+        String result = encounterEngineService.executeCurrentTurn(1L);
+
+        assertNull(result);
+        verify(enemyBehaviorService, never()).executeEnemyTurn(any(), any());
     }
 }
