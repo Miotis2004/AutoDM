@@ -60,13 +60,22 @@ public class QuestService {
         if (dto.getQuestGiverId() != null) {
             Npc giver = npcRepository.findById(dto.getQuestGiverId())
                     .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Quest giver not found"));
+            if (!giver.getCampaign().getId().equals(dto.getCampaignId())) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Quest giver does not belong to the same campaign");
+            }
             quest.setQuestGiver(giver);
         }
 
         if (dto.getRelatedLocationIds() != null && !dto.getRelatedLocationIds().isEmpty()) {
             Set<Location> locations = dto.getRelatedLocationIds().stream()
-                    .map(locId -> locationRepository.findById(locId)
-                            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Location not found: " + locId)))
+                    .map(locId -> {
+                        Location loc = locationRepository.findById(locId)
+                            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Location not found: " + locId));
+                        if (!loc.getCampaign().getId().equals(dto.getCampaignId())) {
+                            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Location does not belong to the same campaign");
+                        }
+                        return loc;
+                    })
                     .collect(Collectors.toSet());
             quest.setRelatedLocations(locations);
         }
@@ -99,15 +108,25 @@ public class QuestService {
         if (dto.getQuestGiverId() != null) {
             Npc giver = npcRepository.findById(dto.getQuestGiverId())
                     .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Quest giver not found"));
+            if (!giver.getCampaign().getId().equals(quest.getCampaign().getId())) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Quest giver does not belong to the same campaign");
+            }
             quest.setQuestGiver(giver);
         } else {
             quest.setQuestGiver(null);
         }
 
         if (dto.getRelatedLocationIds() != null) {
+            final Long questCampaignId = quest.getCampaign().getId();
             Set<Location> locations = dto.getRelatedLocationIds().stream()
-                    .map(locId -> locationRepository.findById(locId)
-                            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Location not found: " + locId)))
+                    .map(locId -> {
+                        Location loc = locationRepository.findById(locId)
+                            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Location not found: " + locId));
+                        if (!loc.getCampaign().getId().equals(questCampaignId)) {
+                            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Location does not belong to the same campaign");
+                        }
+                        return loc;
+                    })
                     .collect(Collectors.toSet());
             quest.setRelatedLocations(locations);
         } else {

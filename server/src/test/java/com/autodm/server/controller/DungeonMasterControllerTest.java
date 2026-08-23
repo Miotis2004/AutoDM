@@ -44,6 +44,8 @@ public class DungeonMasterControllerTest {
     @Test
     public void testHandleAction() throws Exception {
         PlayerAction mockAction = new PlayerAction();
+        mockAction.setCharacterId(1L);
+        mockAction.setActionType(com.autodm.server.service.dm.PlayerActionType.ATTACK);
         ActionResponse mockResponse = new ActionResponse();
         mockResponse.setSuccess(true);
         mockResponse.setNarrative("Test narrative");

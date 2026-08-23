@@ -5,6 +5,7 @@ import com.autodm.server.service.FactionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -29,12 +30,12 @@ public class FactionController {
     }
 
     @PostMapping
-    public ResponseEntity<FactionDto> createFaction(@RequestBody FactionDto factionDto) {
+    public ResponseEntity<FactionDto> createFaction(@Valid @RequestBody FactionDto factionDto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(factionService.createFaction(factionDto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<FactionDto> updateFaction(@PathVariable Long id, @RequestBody FactionDto factionDto) {
+    public ResponseEntity<FactionDto> updateFaction(@PathVariable Long id, @Valid @RequestBody FactionDto factionDto) {
         return ResponseEntity.ok(factionService.updateFaction(id, factionDto));
     }
 

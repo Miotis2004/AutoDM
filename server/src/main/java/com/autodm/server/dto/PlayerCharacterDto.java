@@ -1,5 +1,7 @@
 package com.autodm.server.dto;
 
+import jakarta.validation.constraints.Min;
+
 public class PlayerCharacterDto {
     private Long id;
     private Long campaignId;
@@ -10,8 +12,11 @@ public class PlayerCharacterDto {
     private String background;
     private String alignment;
 
+        @Min(value = 0, message = "Hit points cannot be negative")
     private Integer hitPoints;
+        @Min(value = 0, message = "Maximum hit points cannot be negative")
     private Integer maximumHitPoints;
+        @Min(value = 0, message = "Temporary hit points cannot be negative")
     private Integer temporaryHitPoints;
 
     private Boolean isUnconscious;

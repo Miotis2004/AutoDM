@@ -5,6 +5,7 @@ import com.autodm.server.service.CampaignService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -29,12 +30,12 @@ public class CampaignController {
     }
 
     @PostMapping
-    public ResponseEntity<CampaignDto> createCampaign(@RequestBody CampaignDto campaignDto) {
+    public ResponseEntity<CampaignDto> createCampaign(@Valid @RequestBody CampaignDto campaignDto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(campaignService.createCampaign(campaignDto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CampaignDto> updateCampaign(@PathVariable Long id, @RequestBody CampaignDto campaignDto) {
+    public ResponseEntity<CampaignDto> updateCampaign(@PathVariable Long id, @Valid @RequestBody CampaignDto campaignDto) {
         return ResponseEntity.ok(campaignService.updateCampaign(id, campaignDto));
     }
 

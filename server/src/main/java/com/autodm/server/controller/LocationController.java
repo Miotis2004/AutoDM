@@ -5,6 +5,7 @@ import com.autodm.server.service.LocationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -29,12 +30,12 @@ public class LocationController {
     }
 
     @PostMapping
-    public ResponseEntity<LocationDto> createLocation(@RequestBody LocationDto locationDto) {
+    public ResponseEntity<LocationDto> createLocation(@Valid @RequestBody LocationDto locationDto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(locationService.createLocation(locationDto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<LocationDto> updateLocation(@PathVariable Long id, @RequestBody LocationDto locationDto) {
+    public ResponseEntity<LocationDto> updateLocation(@PathVariable Long id, @Valid @RequestBody LocationDto locationDto) {
         return ResponseEntity.ok(locationService.updateLocation(id, locationDto));
     }
 

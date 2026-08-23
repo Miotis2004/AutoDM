@@ -571,10 +571,10 @@ This document outlines the step-by-step development process for the AutoDM proje
 - **Require Repository Change:** True
 
 **Acceptance Criteria:**
-- [ ] DTO validation rejects invalid identifiers and malformed game actions.
-- [ ] Impossible negative quantities are rejected where inappropriate.
-- [ ] Invalid references between campaign entities are rejected.
-- [ ] Invalid encounter transitions are rejected.
+- [x] DTO validation rejects invalid identifiers and malformed game actions.
+- [x] Impossible negative quantities are rejected where inappropriate.
+- [x] Invalid references between campaign entities are rejected.
+- [x] Invalid encounter transitions are rejected.
 
 ### PROJECT-42: API error handling
 **Objective:** Implement consistent API error responses for validation and runtime failures.

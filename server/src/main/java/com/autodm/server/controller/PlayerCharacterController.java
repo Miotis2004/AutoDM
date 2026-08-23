@@ -5,6 +5,7 @@ import com.autodm.server.dto.PlayerCharacterDto;
 import com.autodm.server.service.PlayerCharacterService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -36,17 +37,13 @@ public class PlayerCharacterController {
     }
 
     @PostMapping
-    public ResponseEntity<PlayerCharacterDto> createCharacter(@RequestBody PlayerCharacterDto dto) {
+    public ResponseEntity<PlayerCharacterDto> createCharacter(@Valid @RequestBody PlayerCharacterDto dto) {
         return ResponseEntity.ok(characterService.createCharacter(dto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PlayerCharacterDto> updateCharacter(@PathVariable Long id, @RequestBody PlayerCharacterDto dto) {
-        try {
-            return ResponseEntity.ok(characterService.updateCharacter(id, dto));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<PlayerCharacterDto> updateCharacter(@PathVariable Long id, @Valid @RequestBody PlayerCharacterDto dto) {
+        return ResponseEntity.ok(characterService.updateCharacter(id, dto));
     }
 
     @DeleteMapping("/{id}")
@@ -63,21 +60,13 @@ public class PlayerCharacterController {
     }
 
     @PostMapping("/{characterId}/resources")
-    public ResponseEntity<CharacterResourceDto> createResource(@PathVariable Long characterId, @RequestBody CharacterResourceDto dto) {
-        try {
-            return ResponseEntity.ok(characterService.createResource(characterId, dto));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<CharacterResourceDto> createResource(@PathVariable Long characterId, @Valid @RequestBody CharacterResourceDto dto) {
+        return ResponseEntity.ok(characterService.createResource(characterId, dto));
     }
 
     @PutMapping("/resources/{resourceId}")
-    public ResponseEntity<CharacterResourceDto> updateResource(@PathVariable Long resourceId, @RequestBody CharacterResourceDto dto) {
-        try {
-            return ResponseEntity.ok(characterService.updateResource(resourceId, dto));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<CharacterResourceDto> updateResource(@PathVariable Long resourceId, @Valid @RequestBody CharacterResourceDto dto) {
+        return ResponseEntity.ok(characterService.updateResource(resourceId, dto));
     }
 
     @DeleteMapping("/resources/{resourceId}")

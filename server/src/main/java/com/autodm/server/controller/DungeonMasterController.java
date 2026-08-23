@@ -6,6 +6,7 @@ import com.autodm.server.service.dm.PlayerAction;
 import com.autodm.server.service.dm.SceneInfo;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/campaigns/{campaignId}/dm")
@@ -24,7 +25,7 @@ public class DungeonMasterController {
     }
 
     @PostMapping("/actions")
-    public ResponseEntity<ActionResponse> handleAction(@PathVariable Long campaignId, @RequestBody PlayerAction action) {
+    public ResponseEntity<ActionResponse> handleAction(@PathVariable Long campaignId, @Valid @RequestBody PlayerAction action) {
         ActionResponse response = dungeonMasterEngine.handleAction(campaignId, action);
         return ResponseEntity.ok(response);
     }
