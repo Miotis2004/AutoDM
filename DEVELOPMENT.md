@@ -585,10 +585,10 @@ This document outlines the step-by-step development process for the AutoDM proje
 - **Require Repository Change:** True
 
 **Acceptance Criteria:**
-- [ ] Validation failures return structured error responses with a status code and message.
-- [ ] Invalid game actions return a clear error response.
-- [ ] Unexpected backend errors return a consistent error shape.
-- [ ] The server compiles and error responses are observable.
+- [x] Validation failures return structured error responses with a status code and message.
+- [x] Invalid game actions return a clear error response.
+- [x] Unexpected backend errors return a consistent error shape.
+- [x] The server compiles and error responses are observable.
 
 ### PROJECT-43: Local deployment and CORS configuration
 **Objective:** Configure the backend for local deployment including CORS so the Angular dev server can communicate with it.
