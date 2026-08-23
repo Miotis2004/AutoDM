@@ -557,10 +557,10 @@ This document outlines the step-by-step development process for the AutoDM proje
 - **Require Repository Change:** True
 
 **Acceptance Criteria:**
-- [ ] A REST endpoint accepts player actions for the current campaign and scene.
-- [ ] The endpoint returns scene info, narrative, dice results, and state changes.
-- [ ] The endpoint triggers encounters, completes objectives, discovers locations, and updates relationships as appropriate.
-- [ ] The server compiles and the endpoint responds.
+- [x] A REST endpoint accepts player actions for the current campaign and scene.
+- [x] The endpoint returns scene info, narrative, dice results, and state changes.
+- [x] The endpoint triggers encounters, completes objectives, discovers locations, and updates relationships as appropriate.
+- [x] The server compiles and the endpoint responds.
 
 ### PROJECT-41: Backend validation of requests and game actions
 **Objective:** Add DTO validation rejecting invalid identifiers, negative quantities, malformed actions, and invalid entity references.
