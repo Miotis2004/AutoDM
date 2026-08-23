@@ -5,6 +5,9 @@ import com.autodm.server.model.CampaignEvent;
 import com.autodm.server.repository.CampaignEventRepository;
 import com.autodm.server.repository.CampaignRepository;
 import com.autodm.server.repository.SceneRepository;
+import com.autodm.server.service.narrative.NarrativeCategory;
+import com.autodm.server.service.narrative.NarrativeMessage;
+import com.autodm.server.service.narrative.NarrativeTemplateService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -21,6 +24,7 @@ class DeterministicDungeonMasterEngineTest {
     private CampaignRepository campaignRepository;
     private CampaignEventRepository campaignEventRepository;
     private SceneRepository sceneRepository;
+    private NarrativeTemplateService narrativeTemplateService;
     private DeterministicDungeonMasterEngine engine;
 
     @BeforeEach
@@ -28,7 +32,8 @@ class DeterministicDungeonMasterEngineTest {
         campaignRepository = mock(CampaignRepository.class);
         campaignEventRepository = mock(CampaignEventRepository.class);
         sceneRepository = mock(SceneRepository.class);
-        engine = new DeterministicDungeonMasterEngine(campaignRepository, campaignEventRepository, sceneRepository);
+        narrativeTemplateService = new NarrativeTemplateService();
+        engine = new DeterministicDungeonMasterEngine(campaignRepository, campaignEventRepository, sceneRepository, narrativeTemplateService);
         when(sceneRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
     }
 
@@ -54,6 +59,12 @@ class DeterministicDungeonMasterEngineTest {
         assertNotNull(response);
         assertTrue(response.isSuccess());
         assertTrue(response.getNarrative().contains("Attack the goblin with sword"));
+
+        assertNotNull(response.getNarrativeLog());
+        assertEquals(3, response.getNarrativeLog().size());
+        assertEquals(NarrativeCategory.PLAYER_ACTION, response.getNarrativeLog().get(0).getCategory());
+        assertEquals(NarrativeCategory.DM_NARRATION, response.getNarrativeLog().get(1).getCategory());
+        assertEquals(NarrativeCategory.DM_NARRATION, response.getNarrativeLog().get(2).getCategory()); // DISCOVERY event maps to DM_NARRATION
 
         ArgumentCaptor<CampaignEvent> eventCaptor = ArgumentCaptor.forClass(CampaignEvent.class);
         verify(campaignEventRepository, times(1)).save(eventCaptor.capture());

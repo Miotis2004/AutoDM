@@ -8,9 +8,12 @@ import com.autodm.server.model.SceneStatus;
 import com.autodm.server.repository.CampaignEventRepository;
 import com.autodm.server.repository.CampaignRepository;
 import com.autodm.server.repository.SceneRepository;
+import com.autodm.server.service.narrative.NarrativeMessage;
+import com.autodm.server.service.narrative.NarrativeTemplateService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,13 +24,16 @@ public class DeterministicDungeonMasterEngine implements DungeonMasterEngine {
     private final CampaignRepository campaignRepository;
     private final CampaignEventRepository campaignEventRepository;
     private final SceneRepository sceneRepository;
+    private final NarrativeTemplateService narrativeTemplateService;
 
     public DeterministicDungeonMasterEngine(CampaignRepository campaignRepository,
                                             CampaignEventRepository campaignEventRepository,
-                                            SceneRepository sceneRepository) {
+                                            SceneRepository sceneRepository,
+                                            NarrativeTemplateService narrativeTemplateService) {
         this.campaignRepository = campaignRepository;
         this.campaignEventRepository = campaignEventRepository;
         this.sceneRepository = sceneRepository;
+        this.narrativeTemplateService = narrativeTemplateService;
     }
 
     @Override
@@ -47,9 +53,15 @@ public class DeterministicDungeonMasterEngine implements DungeonMasterEngine {
         SceneInfo updatedScene = getCurrentScene(campaignId);
         updatedScene.setNarrative(narrative);
 
+        List<NarrativeMessage> narrativeLog = new ArrayList<>();
+        narrativeLog.add(narrativeTemplateService.generatePlayerActionNarrative(action));
+        narrativeLog.add(narrativeTemplateService.generateDmNarration(narrative));
+        narrativeLog.add(narrativeTemplateService.generateFromCampaignEvent(event));
+
         return new ActionResponse(
                 true,
                 narrative,
+                narrativeLog,
                 Collections.singletonList("Recorded player action"),
                 updatedScene
         );
