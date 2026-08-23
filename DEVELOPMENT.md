@@ -431,10 +431,10 @@ This document outlines the step-by-step development process for the AutoDM proje
 - **Require Repository Change:** True
 
 **Acceptance Criteria:**
-- [ ] Engine actions record events such as session start, location entry, discovery, combat, damage, item acquisition, quest changes, relationship changes, and session end.
-- [ ] Events are persisted per campaign.
-- [ ] The event system is usable by the DM engine and services.
-- [ ] Events can be inspected later through the API.
+- [x] Engine actions record events such as session start, location entry, discovery, combat, damage, item acquisition, quest changes, relationship changes, and session end.
+- [x] Events are persisted per campaign.
+- [x] The event system is usable by the DM engine and services.
+- [x] Events can be inspected later through the API.
 
 ### PROJECT-32: Campaign service and REST controller
 **Objective:** Implement the campaign service and controller for create, edit, archive/delete, and active selection.

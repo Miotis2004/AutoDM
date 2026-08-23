@@ -8,6 +8,7 @@ import com.autodm.server.model.SceneStatus;
 import com.autodm.server.repository.CampaignEventRepository;
 import com.autodm.server.repository.CampaignRepository;
 import com.autodm.server.repository.SceneRepository;
+import com.autodm.server.service.EventService;
 import com.autodm.server.service.narrative.NarrativeMessage;
 import com.autodm.server.service.narrative.NarrativeTemplateService;
 import org.springframework.stereotype.Service;
@@ -25,15 +26,18 @@ public class DeterministicDungeonMasterEngine implements DungeonMasterEngine {
     private final CampaignEventRepository campaignEventRepository;
     private final SceneRepository sceneRepository;
     private final NarrativeTemplateService narrativeTemplateService;
+    private final EventService eventService;
 
     public DeterministicDungeonMasterEngine(CampaignRepository campaignRepository,
                                             CampaignEventRepository campaignEventRepository,
                                             SceneRepository sceneRepository,
-                                            NarrativeTemplateService narrativeTemplateService) {
+                                            NarrativeTemplateService narrativeTemplateService,
+                                            EventService eventService) {
         this.campaignRepository = campaignRepository;
         this.campaignEventRepository = campaignEventRepository;
         this.sceneRepository = sceneRepository;
         this.narrativeTemplateService = narrativeTemplateService;
+        this.eventService = eventService;
     }
 
     @Override
@@ -89,12 +93,32 @@ public class DeterministicDungeonMasterEngine implements DungeonMasterEngine {
         }
 
         // Basic deterministic handling
-        // We'll log the action as a generic discovery or system event for now
         String narrative = "You attempted to " + action.getDescription() + ". It was somewhat successful.";
 
-        CampaignEvent event = new CampaignEvent(campaign, CampaignEventType.DISCOVERY,
+        CampaignEventType eventType = CampaignEventType.DISCOVERY;
+        switch (action.getActionType()) {
+            case TRAVEL:
+                eventType = CampaignEventType.LOCATION_ENTRY;
+                break;
+            case ATTACK:
+                eventType = CampaignEventType.COMBAT;
+                break;
+            case USE_ITEM:
+                eventType = CampaignEventType.ITEM_ACQUISITION;
+                break;
+            case REST:
+                eventType = CampaignEventType.SHORT_REST;
+                break;
+            case TALK:
+                eventType = CampaignEventType.RELATIONSHIP_CHANGE;
+                break;
+            default:
+                eventType = CampaignEventType.DISCOVERY;
+                break;
+        }
+
+        CampaignEvent event = eventService.logEvent(campaign, eventType,
                 "Player character " + action.getCharacterId() + " took action: " + action.getActionType() + " - " + action.getDescription());
-        campaignEventRepository.save(event);
 
         updatedScene.setNarrative(narrative);
 
