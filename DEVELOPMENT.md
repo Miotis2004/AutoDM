@@ -67,10 +67,10 @@ This document outlines the step-by-step development process for the AutoDM proje
 - **Require Repository Change:** True
 
 **Acceptance Criteria:**
-- [ ] The database path is read from a configuration property rather than a hard-coded absolute path.
-- [ ] The default path resolves relative to an application or user home directory.
-- [ ] No Windows-only absolute paths are hard-coded in the backend.
-- [ ] The path can be overridden via configuration.
+- [x] The database path is read from a configuration property rather than a hard-coded absolute path.
+- [x] The default path resolves relative to an application or user home directory.
+- [x] No Windows-only absolute paths are hard-coded in the backend.
+- [x] The path can be overridden via configuration.
 
 ### PROJECT-06: Project conventions and code quality baseline
 **Objective:** Establish naming, layering, and code-quality conventions for controllers, services, repositories, and domain models.
