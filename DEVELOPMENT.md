@@ -726,10 +726,10 @@ This document outlines the step-by-step development process for the AutoDM proje
 - **Require Repository Change:** True
 
 **Acceptance Criteria:**
-- [ ] The history screen lists campaign events with type and timestamp.
-- [ ] Events can be filtered or viewed per campaign.
-- [ ] The screen loads data from backend services.
-- [ ] The application builds successfully.
+- [x] The history screen lists campaign events with type and timestamp.
+- [x] Events can be filtered or viewed per campaign.
+- [x] The screen loads data from backend services.
+- [x] The application builds successfully.
 
 ### PROJECT-53: Encounter and combat UI
 **Objective:** Build UI to start, progress, and complete turn-based encounters, showing turn order, combatants, and combat events.

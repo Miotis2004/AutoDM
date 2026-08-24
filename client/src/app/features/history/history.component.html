@@ -1,0 +1,52 @@
+<div class="history-container">
+  <div class="history-header">
+    <h1>Campaign History & Events</h1>
+    @if (hasActiveCampaign()) {
+      <div class="filter-controls">
+        <label for="eventFilter">Filter by Type:</label>
+        <select id="eventFilter" [(ngModel)]="selectedFilter" (ngModelChange)="selectedFilter.set($event)" class="form-control">
+          <option value="ALL">All Events</option>
+          @for (type of eventTypes; track type) {
+            <option [value]="type">{{ type }}</option>
+          }
+        </select>
+      </div>
+    }
+  </div>
+
+  @if (isLoading()) {
+    <div class="loading-state">
+      <p>Loading events...</p>
+    </div>
+  } @else if (!hasActiveCampaign()) {
+    <div class="no-campaign-state">
+      <h2>No Active Campaign</h2>
+      <p>Please select a campaign from the dashboard to view history.</p>
+      <button class="btn btn-primary" routerLink="/campaigns">View Campaigns</button>
+    </div>
+  } @else {
+    @if (allEvents().length === 0) {
+      <div class="empty-state">
+        <p>No events recorded yet. Start a session to begin logging history.</p>
+      </div>
+    } @else if (filteredEvents().length === 0) {
+      <div class="empty-state">
+        <p>No events match the selected filter.</p>
+      </div>
+    } @else {
+      <ul class="event-list">
+        @for (event of filteredEvents(); track event.id) {
+          <li class="event-item">
+            <div class="event-meta">
+              <span class="event-time">{{ event.timestamp | date:'medium' }}</span>
+              <span class="event-type badge-{{ event.eventType.toLowerCase() }}">{{ event.eventType }}</span>
+            </div>
+            <div class="event-description">
+              <p>{{ event.description }}</p>
+            </div>
+          </li>
+        }
+      </ul>
+    }
+  }
+</div>

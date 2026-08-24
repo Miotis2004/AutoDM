@@ -102,7 +102,7 @@
             @for (event of recentEvents(); track event.id) {
               <li class="event-item">
                 <span class="event-time">{{ event.timestamp | date:'shortTime' }}</span>
-                <span class="event-type badge-{{ event.type.toLowerCase() }}">{{ event.type }}</span>
+                <span class="event-type badge-{{ event.eventType.toLowerCase() }}">{{ event.eventType }}</span>
                 <span class="event-desc">{{ event.description }}</span>
               </li>
             }
