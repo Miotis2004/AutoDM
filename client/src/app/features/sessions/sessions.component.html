@@ -1,0 +1,54 @@
+<div class="sessions-container">
+  <div class="sessions-header">
+    <h1>Session Management</h1>
+    @if (hasActiveCampaign()) {
+      <div class="actions">
+        @if (!activeSessionId()) {
+          <button class="btn btn-primary" (click)="startSession()" [disabled]="isLoading()">Start New Session</button>
+        } @else {
+          <button class="btn btn-danger" (click)="endSession(activeSessionId()!)" [disabled]="isLoading()">End Session</button>
+        }
+      </div>
+    }
+  </div>
+
+  @if (isLoading()) {
+    <div class="loading-state">
+      <p>Loading sessions...</p>
+    </div>
+  } @else if (!hasActiveCampaign()) {
+    <div class="no-campaign-state">
+      <h2>No Active Campaign</h2>
+      <p>Please select a campaign from the dashboard to manage sessions.</p>
+      <button class="btn btn-primary" routerLink="/campaigns">View Campaigns</button>
+    </div>
+  } @else {
+    @if (sessions().length === 0) {
+      <div class="empty-state">
+        <p>No sessions found for this campaign. Start a new session to begin tracking history.</p>
+      </div>
+    } @else {
+      <ul class="session-list">
+        @for (session of sessions(); track session.id) {
+          <li class="session-item">
+            <div class="session-info">
+              <span class="session-status" [class.active]="!session.endTime" [class.ended]="session.endTime">
+                {{ !session.endTime ? 'Active' : 'Ended' }}
+              </span>
+              <span>Start: {{ session.startTime | date:'medium' }}</span>
+              @if (session.endTime) {
+                <span>End: {{ session.endTime | date:'medium' }}</span>
+              }
+            </div>
+            <div class="session-actions">
+              @if (!session.endTime) {
+                <button class="btn btn-primary" routerLink="/play">Resume</button>
+                <button class="btn btn-danger" (click)="endSession(session.id!)">End</button>
+              }
+            </div>
+          </li>
+        }
+      </ul>
+    }
+  }
+</div>

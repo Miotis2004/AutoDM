@@ -10,7 +10,23 @@ export class CampaignState {
   activeCampaign = this.activeCampaignSignal.asReadonly();
   hasActiveCampaign = computed(() => this.activeCampaignSignal() !== null);
 
+  constructor() {
+    const stored = localStorage.getItem('activeCampaign');
+    if (stored) {
+      try {
+        this.activeCampaignSignal.set(JSON.parse(stored));
+      } catch (e) {
+        console.error('Failed to parse active campaign from local storage', e);
+      }
+    }
+  }
+
   setActiveCampaign(campaign: CampaignDto | null) {
     this.activeCampaignSignal.set(campaign);
+    if (campaign) {
+      localStorage.setItem('activeCampaign', JSON.stringify(campaign));
+    } else {
+      localStorage.removeItem('activeCampaign');
+    }
   }
 }
