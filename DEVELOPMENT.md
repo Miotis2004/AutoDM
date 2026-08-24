@@ -755,11 +755,11 @@ This document outlines the step-by-step development process for the AutoDM proje
 - **Require Repository Change:** True
 
 **Acceptance Criteria:**
-- [ ] API-unavailable failures are shown to the user.
-- [ ] Invalid user operations and failed saves surface clear messages.
-- [ ] Invalid game actions and encounter errors are displayed.
-- [ ] Backend failures are not silently ignored.
-- [ ] The application builds successfully.
+- [x] API-unavailable failures are shown to the user.
+- [x] Invalid user operations and failed saves surface clear messages.
+- [x] Invalid game actions and encounter errors are displayed.
+- [x] Backend failures are not silently ignored.
+- [x] The application builds successfully.
 
 ### PROJECT-55: Loading, empty states, and confirmations
 **Objective:** Add loading indicators, empty states, and confirmations for destructive actions across the UI.
