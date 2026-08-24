@@ -14,9 +14,6 @@ import { CampaignDto, CampaignStatus } from '../../core/models';
       <h2>Campaigns Management</h2>
 
       <!-- Error and Loading States -->
-      @if (loading) {
-        <p>Loading campaigns...</p>
-      }
       @if (error) {
         <p class="error">{{ error }}</p>
       }
@@ -25,8 +22,10 @@ import { CampaignDto, CampaignStatus } from '../../core/models';
         <!-- Campaigns List -->
         <div class="campaign-list">
           <h3>Your Campaigns</h3>
-          @if (!loading && campaigns.length === 0) {
-            <p>No campaigns found. Create one to get started!</p>
+          @if (campaigns.length === 0) {
+            <div class="bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg p-12 text-center empty-state">
+              <p class="text-gray-500">No campaigns found. Create one to get started!</p>
+            </div>
           }
 
           <ul class="list">
@@ -59,9 +58,9 @@ import { CampaignDto, CampaignStatus } from '../../core/models';
           <form [formGroup]="campaignForm" (ngSubmit)="onSubmit()">
             <div class="form-group">
               <label for="title">Title *</label>
-              <input id="title" type="text" formControlName="title">
+              <input id="title" type="text" formControlName="title" [class.ng-invalid]="campaignForm.get('title')?.invalid" [class.ng-touched]="campaignForm.get('title')?.touched">
               @if (campaignForm.get('title')?.invalid && campaignForm.get('title')?.touched) {
-                <span class="error-text">Title is required.</span>
+                <div class="error-message">Title is required.</div>
               }
             </div>
 
@@ -123,7 +122,6 @@ export class CampaignsComponent implements OnInit {
   private fb = inject(FormBuilder);
 
   campaigns: CampaignDto[] = [];
-  loading = false;
   saving = false;
   error: string | null = null;
 
@@ -150,17 +148,14 @@ export class CampaignsComponent implements OnInit {
   }
 
   loadCampaigns() {
-    this.loading = true;
     this.error = null;
     this.campaignService.getAllCampaigns().subscribe({
       next: (campaigns) => {
         this.campaigns = campaigns;
-        this.loading = false;
       },
       error: (err) => {
         this.error = 'Failed to load campaigns.';
         console.error(err);
-        this.loading = false;
       }
     });
   }
