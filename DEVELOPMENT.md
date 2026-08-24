@@ -799,10 +799,10 @@ This document outlines the step-by-step development process for the AutoDM proje
 - **Require Repository Change:** True
 
 **Acceptance Criteria:**
-- [ ] A user can create a campaign through the UI.
-- [ ] Player characters can be created and persisted for the campaign.
-- [ ] World, NPC, quest, and item data can be created and persisted.
-- [ ] The full workflow completes end to end through the local frontend and backend.
+- [x] A user can create a campaign through the UI.
+- [x] Player characters can be created and persisted for the campaign.
+- [x] World, NPC, quest, and item data can be created and persisted.
+- [x] The full workflow completes end to end through the local frontend and backend.
 
 ### PROJECT-58: Playable Dungeon Master session loop integration
 **Objective:** Integrate the DM engine, dice, mechanics, and narrative so a full playable session loop runs from the UI.
