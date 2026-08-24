@@ -1,0 +1,82 @@
+<div class="p-6">
+  <h1 class="text-3xl font-bold mb-6">Character Management</h1>
+
+  <div class="flex justify-between items-center mb-6">
+    <h2 class="text-xl font-semibold">Player Characters</h2>
+    <button (click)="openForm()" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
+      Add Character
+    </button>
+  </div>
+
+  @if (showForm) {
+    <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+      <h3 class="text-lg font-medium mb-4">{{ editingId ? 'Edit Character' : 'New Character' }}</h3>
+      <form (ngSubmit)="saveCharacter()" #characterForm="ngForm">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="mb-4 lg:col-span-2">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Name *</label>
+            <input type="text" [(ngModel)]="newCharacter.name" name="name" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+          </div>
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Class</label>
+            <input type="text" [(ngModel)]="newCharacter.characterClass" name="characterClass" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+          </div>
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Ancestry (Race)</label>
+            <input type="text" [(ngModel)]="newCharacter.ancestry" name="ancestry" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+          </div>
+
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Level</label>
+            <input type="number" [(ngModel)]="newCharacter.level" name="level" min="1" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+          </div>
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Max HP</label>
+            <input type="number" [(ngModel)]="newCharacter.maximumHitPoints" name="maximumHitPoints" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+          </div>
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Current HP</label>
+            <input type="number" [(ngModel)]="newCharacter.hitPoints" name="hitPoints" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+          </div>
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Armor Class (AC)</label>
+            <input type="number" [(ngModel)]="newCharacter.armorClass" name="armorClass" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+          </div>
+        </div>
+
+        <div class="flex justify-end gap-2 mt-4">
+          <button type="button" (click)="cancelForm()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded">Cancel</button>
+          <button type="submit" [disabled]="!characterForm.form.valid" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded disabled:opacity-50">Save</button>
+        </div>
+      </form>
+    </div>
+  }
+
+  @if (characters.length === 0) {
+    <div class="bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg p-12 text-center">
+      <p class="text-gray-500">No characters found. Create one to get started.</p>
+    </div>
+  } @else {
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      @for (character of characters; track character.id) {
+        <div class="bg-white p-4 rounded-lg shadow border border-gray-200">
+          <div class="flex justify-between items-start">
+            <h3 class="text-lg font-bold">{{ character.name }}</h3>
+            <span class="text-xs bg-gray-200 px-2 py-1 rounded">Lvl {{ character.level }}</span>
+          </div>
+          <p class="text-sm text-gray-500 mt-1">{{ character.ancestry }} {{ character.characterClass }}</p>
+
+          <div class="mt-4 grid grid-cols-2 gap-2 text-sm">
+            <div><span class="font-semibold text-gray-600">HP:</span> {{ character.hitPoints }} / {{ character.maximumHitPoints }}</div>
+            <div><span class="font-semibold text-gray-600">AC:</span> {{ character.armorClass }}</div>
+          </div>
+
+          <div class="mt-4 flex justify-end gap-2">
+            <button (click)="openForm(character)" class="text-blue-500 hover:text-blue-700 text-sm">Edit</button>
+            <button (click)="deleteCharacter(character.id)" class="text-red-500 hover:text-red-700 text-sm">Delete</button>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>

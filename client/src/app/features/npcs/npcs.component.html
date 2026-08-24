@@ -1,0 +1,79 @@
+<div class="p-6">
+  <h1 class="text-3xl font-bold mb-6">NPC Management</h1>
+
+  <div class="flex justify-between items-center mb-6">
+    <h2 class="text-xl font-semibold">Non-Player Characters</h2>
+    <button (click)="openForm()" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
+      Add NPC
+    </button>
+  </div>
+
+  @if (showForm) {
+    <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+      <h3 class="text-lg font-medium mb-4">{{ editingId ? 'Edit NPC' : 'New NPC' }}</h3>
+      <form (ngSubmit)="saveNpc()" #npcForm="ngForm">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Name *</label>
+            <input type="text" [(ngModel)]="newNpc.name" name="name" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+          </div>
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Race</label>
+            <input type="text" [(ngModel)]="newNpc.race" name="race" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+          </div>
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Occupation</label>
+            <input type="text" [(ngModel)]="newNpc.occupation" name="occupation" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+          </div>
+          <div class="mb-4 flex items-end pb-2">
+            <input type="checkbox" [(ngModel)]="newNpc.isAlive" name="isAlive" id="isAlive" class="mr-2 leading-tight">
+            <label for="isAlive" class="text-sm text-gray-700 font-bold">Is Alive</label>
+          </div>
+          <div class="mb-4 md:col-span-2">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Appearance</label>
+            <textarea [(ngModel)]="newNpc.appearance" name="appearance" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" rows="2"></textarea>
+          </div>
+          <div class="mb-4 md:col-span-2">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Personality</label>
+            <textarea [(ngModel)]="newNpc.personality" name="personality" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" rows="2"></textarea>
+          </div>
+          <div class="mb-4 md:col-span-2">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Notes</label>
+            <textarea [(ngModel)]="newNpc.notes" name="notes" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" rows="2"></textarea>
+          </div>
+        </div>
+        <div class="flex justify-end gap-2 mt-4">
+          <button type="button" (click)="cancelForm()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded">Cancel</button>
+          <button type="submit" [disabled]="!npcForm.form.valid" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded disabled:opacity-50">Save</button>
+        </div>
+      </form>
+    </div>
+  }
+
+  @if (npcs.length === 0) {
+    <div class="bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg p-12 text-center">
+      <p class="text-gray-500">No NPCs found. Create one to get started.</p>
+    </div>
+  } @else {
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      @for (npc of npcs; track npc.id) {
+        <div class="bg-white p-4 rounded-lg shadow border border-gray-200">
+          <div class="flex justify-between items-start">
+            <h3 class="text-lg font-bold">{{ npc.name }}</h3>
+            @if (!npc.isAlive) {
+              <span class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded">Deceased</span>
+            }
+          </div>
+          @if (npc.race || npc.occupation) {
+            <p class="text-sm text-gray-500 mt-1">{{ npc.race }} {{ npc.occupation ? '- ' + npc.occupation : '' }}</p>
+          }
+          <p class="text-gray-600 mt-2 line-clamp-2">{{ npc.appearance }}</p>
+          <div class="mt-4 flex justify-end gap-2">
+            <button (click)="openForm(npc)" class="text-blue-500 hover:text-blue-700 text-sm">Edit</button>
+            <button (click)="deleteNpc(npc.id)" class="text-red-500 hover:text-red-700 text-sm">Delete</button>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>

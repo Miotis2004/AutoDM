@@ -1,0 +1,76 @@
+<div class="p-6">
+  <h1 class="text-3xl font-bold mb-6">Quest Management</h1>
+
+  <div class="flex justify-between items-center mb-6">
+    <h2 class="text-xl font-semibold">Quests</h2>
+    <button (click)="openForm()" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
+      Add Quest
+    </button>
+  </div>
+
+  @if (showForm) {
+    <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+      <h3 class="text-lg font-medium mb-4">{{ editingId ? 'Edit Quest' : 'New Quest' }}</h3>
+      <form (ngSubmit)="saveQuest()" #questForm="ngForm">
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2">Title *</label>
+          <input type="text" [(ngModel)]="newQuest.title" name="title" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2">Status</label>
+          <select [(ngModel)]="newQuest.status" name="status" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            @for (status of questStatuses; track status) {
+              <option [value]="status">{{ status.replace('_', ' ') }}</option>
+            }
+          </select>
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2">Description</label>
+          <textarea [(ngModel)]="newQuest.description" name="description" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" rows="3"></textarea>
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2">Rewards</label>
+          <textarea [(ngModel)]="newQuest.rewards" name="rewards" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" rows="2"></textarea>
+        </div>
+        <div class="flex justify-end gap-2">
+          <button type="button" (click)="cancelForm()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded">Cancel</button>
+          <button type="submit" [disabled]="!questForm.form.valid" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded disabled:opacity-50">Save</button>
+        </div>
+      </form>
+    </div>
+  }
+
+  @if (quests.length === 0) {
+    <div class="bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg p-12 text-center">
+      <p class="text-gray-500">No quests found. Create one to get started.</p>
+    </div>
+  } @else {
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      @for (quest of quests; track quest.id) {
+        <div class="bg-white p-4 rounded-lg shadow border border-gray-200">
+          <div class="flex justify-between items-start">
+            <h3 class="text-lg font-bold">{{ quest.title }}</h3>
+            <span class="text-xs px-2 py-1 rounded"
+              [ngClass]="{
+                'bg-gray-200': quest.status === 'NOT_STARTED',
+                'bg-blue-200': quest.status === 'IN_PROGRESS',
+                'bg-green-200': quest.status === 'COMPLETED',
+                'bg-red-200': quest.status === 'FAILED',
+                'bg-orange-200': quest.status === 'ABANDONED'
+              }">
+              {{ quest.status.replace('_', ' ') }}
+            </span>
+          </div>
+          <p class="text-gray-600 mt-2 line-clamp-3">{{ quest.description }}</p>
+          @if (quest.rewards) {
+            <p class="text-sm text-gray-500 mt-2"><span class="font-semibold">Rewards:</span> {{ quest.rewards }}</p>
+          }
+          <div class="mt-4 flex justify-end gap-2">
+            <button (click)="openForm(quest)" class="text-blue-500 hover:text-blue-700 text-sm">Edit</button>
+            <button (click)="deleteQuest(quest.id)" class="text-red-500 hover:text-red-700 text-sm">Delete</button>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>

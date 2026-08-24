@@ -1,0 +1,147 @@
+<div class="p-6">
+  <h1 class="text-3xl font-bold mb-6">World Management</h1>
+
+  <div class="mb-4 border-b border-gray-200">
+    <ul class="flex flex-wrap -mb-px text-sm font-medium text-center">
+      <li class="mr-2">
+        <button
+          (click)="setTab('locations')"
+          [class.text-blue-600]="selectedTab === 'locations'"
+          [class.border-blue-600]="selectedTab === 'locations'"
+          class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300">
+          Locations
+        </button>
+      </li>
+      <li class="mr-2">
+        <button
+          (click)="setTab('factions')"
+          [class.text-blue-600]="selectedTab === 'factions'"
+          [class.border-blue-600]="selectedTab === 'factions'"
+          class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300">
+          Factions
+        </button>
+      </li>
+    </ul>
+  </div>
+
+  @if (selectedTab === 'locations') {
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-xl font-semibold">Locations</h2>
+      <button (click)="openLocationForm()" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
+        Add Location
+      </button>
+    </div>
+
+    @if (showLocationForm) {
+      <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+        <h3 class="text-lg font-medium mb-4">{{ editingLocationId ? 'Edit Location' : 'New Location' }}</h3>
+        <form (ngSubmit)="saveLocation()" #locationForm="ngForm">
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Name *</label>
+            <input type="text" [(ngModel)]="newLocation.name" name="name" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+          </div>
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Type</label>
+            <select [(ngModel)]="newLocation.type" name="type" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+              <option [ngValue]="undefined">Select Type</option>
+              @for (type of locationTypes; track type) {
+                <option [value]="type">{{ type }}</option>
+              }
+            </select>
+          </div>
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Description</label>
+            <textarea [(ngModel)]="newLocation.description" name="description" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" rows="3"></textarea>
+          </div>
+          <div class="mb-4 flex items-center">
+            <input type="checkbox" [(ngModel)]="newLocation.isDiscovered" name="isDiscovered" id="isDiscovered" class="mr-2 leading-tight">
+            <label for="isDiscovered" class="text-sm text-gray-700 font-bold">Is Discovered</label>
+          </div>
+          <div class="flex justify-end gap-2">
+            <button type="button" (click)="cancelLocationForm()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded">Cancel</button>
+            <button type="submit" [disabled]="!locationForm.form.valid" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded disabled:opacity-50">Save</button>
+          </div>
+        </form>
+      </div>
+    }
+
+    @if (locations.length === 0) {
+      <div class="bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg p-12 text-center">
+        <p class="text-gray-500">No locations found. Create one to get started.</p>
+      </div>
+    } @else {
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        @for (location of locations; track location.id) {
+          <div class="bg-white p-4 rounded-lg shadow border border-gray-200">
+            <div class="flex justify-between items-start">
+              <h3 class="text-lg font-bold">{{ location.name }}</h3>
+              @if (location.type) {
+                <span class="text-xs bg-gray-200 px-2 py-1 rounded">{{ location.type }}</span>
+              }
+            </div>
+            <p class="text-gray-600 mt-2 line-clamp-3">{{ location.description }}</p>
+            <div class="mt-4 flex justify-end gap-2">
+              <button (click)="openLocationForm(location)" class="text-blue-500 hover:text-blue-700 text-sm">Edit</button>
+              <button (click)="deleteLocation(location.id)" class="text-red-500 hover:text-red-700 text-sm">Delete</button>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  }
+
+  @if (selectedTab === 'factions') {
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-xl font-semibold">Factions</h2>
+      <button (click)="openFactionForm()" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
+        Add Faction
+      </button>
+    </div>
+
+    @if (showFactionForm) {
+      <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+        <h3 class="text-lg font-medium mb-4">{{ editingFactionId ? 'Edit Faction' : 'New Faction' }}</h3>
+        <form (ngSubmit)="saveFaction()" #factionForm="ngForm">
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Name *</label>
+            <input type="text" [(ngModel)]="newFaction.name" name="name" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+          </div>
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Description</label>
+            <textarea [(ngModel)]="newFaction.description" name="description" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" rows="2"></textarea>
+          </div>
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Goals</label>
+            <textarea [(ngModel)]="newFaction.goals" name="goals" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" rows="2"></textarea>
+          </div>
+          <div class="flex justify-end gap-2">
+            <button type="button" (click)="cancelFactionForm()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded">Cancel</button>
+            <button type="submit" [disabled]="!factionForm.form.valid" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded disabled:opacity-50">Save</button>
+          </div>
+        </form>
+      </div>
+    }
+
+    @if (factions.length === 0) {
+      <div class="bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg p-12 text-center">
+        <p class="text-gray-500">No factions found. Create one to get started.</p>
+      </div>
+    } @else {
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        @for (faction of factions; track faction.id) {
+          <div class="bg-white p-4 rounded-lg shadow border border-gray-200">
+            <h3 class="text-lg font-bold">{{ faction.name }}</h3>
+            <p class="text-gray-600 mt-2 line-clamp-2">{{ faction.description }}</p>
+            @if (faction.goals) {
+              <p class="text-sm text-gray-500 mt-2"><span class="font-semibold">Goals:</span> {{ faction.goals }}</p>
+            }
+            <div class="mt-4 flex justify-end gap-2">
+              <button (click)="openFactionForm(faction)" class="text-blue-500 hover:text-blue-700 text-sm">Edit</button>
+              <button (click)="deleteFaction(faction.id)" class="text-red-500 hover:text-red-700 text-sm">Delete</button>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  }
+</div>
