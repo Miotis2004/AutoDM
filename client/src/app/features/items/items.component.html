@@ -15,7 +15,10 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <div class="mb-4 lg:col-span-2">
             <label class="block text-gray-700 text-sm font-bold mb-2">Name *</label>
-            <input type="text" [(ngModel)]="newItem.name" name="name" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            <input type="text" [(ngModel)]="newItem.name" name="name" required #itemNameField="ngModel" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            @if (itemNameField.invalid && itemNameField.touched) {
+              <div class="error-message">Name is required.</div>
+            }
           </div>
           <div class="mb-4">
             <label class="block text-gray-700 text-sm font-bold mb-2">Category</label>
@@ -64,7 +67,7 @@
   }
 
   @if (items.length === 0) {
-    <div class="bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg p-12 text-center">
+    <div class="bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg p-12 text-center empty-state">
       <p class="text-gray-500">No items found. Create one to get started.</p>
     </div>
   } @else {

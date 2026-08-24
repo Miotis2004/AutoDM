@@ -770,11 +770,11 @@ This document outlines the step-by-step development process for the AutoDM proje
 - **Require Repository Change:** True
 
 **Acceptance Criteria:**
-- [ ] Loading indicators appear during backend requests.
-- [ ] Empty states are shown for lists with no data.
-- [ ] Destructive actions require confirmation.
-- [ ] Forms provide readable validation feedback.
-- [ ] The application builds successfully.
+- [x] Loading indicators appear during backend requests.
+- [x] Empty states are shown for lists with no data.
+- [x] Destructive actions require confirmation.
+- [x] Forms provide readable validation feedback.
+- [x] The application builds successfully.
 
 ### PROJECT-56: Settings screen
 **Objective:** Build a settings screen for local configuration such as storage path and display preferences.

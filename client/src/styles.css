@@ -1,1 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
+input.ng-invalid.ng-touched, select.ng-invalid.ng-touched, textarea.ng-invalid.ng-touched { border-color: red; }
+.error-message { color: red; font-size: 12px; margin-top: 4px; }
+.bg-gray-50 { background-color: #f9fafb; }
+.border-2 { border-width: 2px; }
+.border-dashed { border-style: dashed; }
+.border-gray-300 { border-color: #d1d5db; }
+.rounded-lg { border-radius: 0.5rem; }
+.p-12 { padding: 3rem; }
+.text-center { text-align: center; }
+.text-gray-500 { color: #6b7280; }

@@ -15,7 +15,10 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div class="mb-4">
             <label class="block text-gray-700 text-sm font-bold mb-2">Name *</label>
-            <input type="text" [(ngModel)]="newNpc.name" name="name" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            <input type="text" [(ngModel)]="newNpc.name" name="name" required #npcNameField="ngModel" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            @if (npcNameField.invalid && npcNameField.touched) {
+              <div class="error-message">Name is required.</div>
+            }
           </div>
           <div class="mb-4">
             <label class="block text-gray-700 text-sm font-bold mb-2">Race</label>
@@ -51,7 +54,7 @@
   }
 
   @if (npcs.length === 0) {
-    <div class="bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg p-12 text-center">
+    <div class="bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg p-12 text-center empty-state">
       <p class="text-gray-500">No NPCs found. Create one to get started.</p>
     </div>
   } @else {

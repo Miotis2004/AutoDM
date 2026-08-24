@@ -14,7 +14,10 @@
       <form (ngSubmit)="saveQuest()" #questForm="ngForm">
         <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2">Title *</label>
-          <input type="text" [(ngModel)]="newQuest.title" name="title" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+          <input type="text" [(ngModel)]="newQuest.title" name="title" required #questTitleField="ngModel" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+          @if (questTitleField.invalid && questTitleField.touched) {
+            <div class="error-message">Title is required.</div>
+          }
         </div>
         <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2">Status</label>
@@ -41,7 +44,7 @@
   }
 
   @if (quests.length === 0) {
-    <div class="bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg p-12 text-center">
+    <div class="bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg p-12 text-center empty-state">
       <p class="text-gray-500">No quests found. Create one to get started.</p>
     </div>
   } @else {
