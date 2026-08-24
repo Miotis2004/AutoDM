@@ -1,0 +1,15 @@
+.narrative-log-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.log-entries {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.log-entry {
+    max-width: 90%;
+    word-wrap: break-word;
+}
