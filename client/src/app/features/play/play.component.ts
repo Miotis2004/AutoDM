@@ -212,7 +212,7 @@ export class PlayComponent implements OnInit {
     }).slice(0, 5).reverse();
 
     recent.forEach(e => {
-        this.addLogEntry('EVENT', `[${e.type}] ${e.description}`);
+        this.addLogEntry('EVENT', `[${e.eventType}] ${e.description}`);
     });
   }
 

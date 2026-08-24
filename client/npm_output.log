@@ -1,0 +1,37 @@
+
+> client@0.0.0 start
+> ng serve
+
+❯ Building...
+✔ Building...
+Initial chunk files | Names                |  Raw size
+main.js             | main                 |  11.59 kB |
+chunk-YQOESBWP.js   | -                    | 803 bytes |
+styles.css          | styles               |  95 bytes |
+
+                    | Initial total        |  12.48 kB
+
+Lazy chunk files    | Names                |  Raw size
+chunk-W4VBV5JU.js   | world-component      |  36.79 kB |
+chunk-3ESNU6YT.js   | play-component       |  36.47 kB |
+chunk-T6Z4B5Q2.js   | dashboard-component  |  34.60 kB |
+chunk-D4YXRBFE.js   | items-component      |  29.91 kB |
+chunk-SQFJE4WU.js   | characters-component |  24.94 kB |
+chunk-TE5TI53C.js   | campaigns-component  |  24.83 kB |
+chunk-TSDUE6IT.js   | npcs-component       |  23.79 kB |
+chunk-5ABK5TNN.js   | creatures-component  |  23.79 kB |
+chunk-OQ36TINA.js   | quests-component     |  21.07 kB |
+chunk-DSD65BPN.js   | history-component    |  20.72 kB |
+chunk-4VLAPOKA.js   | sessions-component   |  17.79 kB |
+chunk-4ZYPCCSY.js   | -                    |  10.64 kB |
+chunk-AT3HXAET.js   | -                    |   3.12 kB |
+chunk-OE3RGS2T.js   | encounters-component |   2.06 kB |
+chunk-AQ2O5FAH.js   | settings-component   |   2.01 kB |
+...and 4 more lazy chunks files. Use "--verbose" to show all the files.
+
+Application bundle generation complete. [3.961 seconds] - 2026-08-24T01:38:35.556Z
+
+Watch mode enabled. Watching for file changes...
+NOTE: Raw file sizes do not reflect development server per-request transformations.
+  ➜  Local:   http://localhost:4200/
+1:38:36 AM [vite] (client) [optimizer] bundling dependencies...
