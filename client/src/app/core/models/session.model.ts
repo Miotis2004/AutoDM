@@ -25,7 +25,7 @@ export interface CampaignEventDto {
 export interface GameSessionDto {
   id?: number;
   campaignId: number;
-  sessionNumber: number;
+  sessionNumber?: number;
   startTime?: string;
   endTime?: string;
   summary?: string;

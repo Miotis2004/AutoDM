@@ -712,10 +712,10 @@ This document outlines the step-by-step development process for the AutoDM proje
 - **Require Repository Change:** True
 
 **Acceptance Criteria:**
-- [ ] The UI can start a session and resume an existing campaign.
-- [ ] The UI can end a session.
-- [ ] Session history is viewable.
-- [ ] The application builds successfully.
+- [x] The UI can start a session and resume an existing campaign.
+- [x] The UI can end a session.
+- [x] Session history is viewable.
+- [x] The application builds successfully.
 
 ### PROJECT-52: History and event inspection screen
 **Objective:** Build a screen for inspecting prior campaign events and session history.
