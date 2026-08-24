@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NpcDto } from '../../core/models/npc.model';
+import { NpcService } from '../../core/services/npc.service';
+import { CampaignState } from '../../core/state/campaign.state';
+
 
 @Component({
   selector: 'app-npcs',
@@ -16,10 +19,28 @@ export class NpcsComponent implements OnInit {
   editingId: number | null = null;
   newNpc: Partial<NpcDto> = { isAlive: true };
 
-  constructor() {}
+    private npcService = inject(NpcService);
+  private campaignState = inject(CampaignState);
+  activeCampaign = this.campaignState.activeCampaign;
+
+  constructor() {
+    effect(() => {
+      const campaign = this.activeCampaign();
+      if (campaign && campaign.id) {
+        this.loadNpcs(campaign.id);
+      } else {
+        this.npcs = [];
+      }
+    });
+  }
+
+  loadNpcs(campaignId: number) {
+    this.npcService.getNpcsByCampaign(campaignId).subscribe(npcs => {
+      this.npcs = npcs;
+    });
+  }
 
   ngOnInit(): void {
-    // In a real implementation, load these from a service
   }
 
   openForm(npc?: NpcDto) {
@@ -44,12 +65,14 @@ export class NpcsComponent implements OnInit {
       if (this.editingId) {
         const index = this.npcs.findIndex(n => n.id === this.editingId);
         if (index !== -1) {
-          this.npcs[index] = { ...this.npcs[index], ...this.newNpc } as NpcDto;
+          this.npcService.updateNpc(this.editingId, { ...this.npcs[index], ...this.newNpc } as NpcDto).subscribe(updated => {
+            this.npcs[index] = updated;
+          });
         }
       } else {
         const npc: NpcDto = {
           id: Date.now(),
-          campaignId: 1, // hardcoded for now
+          campaignId: this.activeCampaign()?.id || 0,
           name: this.newNpc.name,
           race: this.newNpc.race || '',
           occupation: this.newNpc.occupation || '',
@@ -58,7 +81,9 @@ export class NpcsComponent implements OnInit {
           isAlive: this.newNpc.isAlive !== false, // default true
           notes: this.newNpc.notes || ''
         };
-        this.npcs.push(npc);
+        this.npcService.createNpc(npc.campaignId, npc).subscribe(created => {
+          this.npcs.push(created);
+        });
       }
       this.cancelForm();
     }
@@ -66,7 +91,9 @@ export class NpcsComponent implements OnInit {
 
   deleteNpc(id: number | undefined) {
     if (id && confirm('Are you sure you want to delete this NPC?')) {
-      this.npcs = this.npcs.filter(n => n.id !== id);
+      this.npcService.deleteNpc(id).subscribe(() => {
+        this.npcs = this.npcs.filter(n => n.id !== id);
+      });
     }
   }
 }

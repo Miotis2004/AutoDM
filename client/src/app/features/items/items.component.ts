@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ItemDto, ItemCategory } from '../../core/models/item.model';
+import { ItemService } from '../../core/services/item.service';
+import { CampaignState } from '../../core/state/campaign.state';
+
 
 @Component({
   selector: 'app-items',
@@ -18,10 +21,28 @@ export class ItemsComponent implements OnInit {
 
   itemCategories = Object.values(ItemCategory);
 
-  constructor() {}
+  private itemService = inject(ItemService);
+  private campaignState = inject(CampaignState);
+  activeCampaign = this.campaignState.activeCampaign;
+
+  constructor() {
+    effect(() => {
+      const campaign = this.activeCampaign();
+      if (campaign && campaign.id) {
+        this.loadItems(campaign.id);
+      } else {
+        this.items = [];
+      }
+    });
+  }
+
+  loadItems(campaignId: number) {
+    this.itemService.getItemsByCampaign(campaignId).subscribe(items => {
+      this.items = items;
+    });
+  }
 
   ngOnInit(): void {
-    // In a real implementation, load these from a service
   }
 
   openForm(item?: ItemDto) {
@@ -46,12 +67,14 @@ export class ItemsComponent implements OnInit {
       if (this.editingId) {
         const index = this.items.findIndex(i => i.id === this.editingId);
         if (index !== -1) {
-          this.items[index] = { ...this.items[index], ...this.newItem } as ItemDto;
+          this.itemService.updateItem(this.editingId, { ...this.items[index], ...this.newItem } as ItemDto).subscribe(updated => {
+            this.items[index] = updated;
+          });
         }
       } else {
         const item: ItemDto = {
           id: Date.now(),
-          campaignId: 1, // hardcoded for now
+          campaignId: this.activeCampaign()?.id || 0,
           name: this.newItem.name,
           description: this.newItem.description || '',
           category: this.newItem.category,
@@ -61,7 +84,9 @@ export class ItemsComponent implements OnInit {
           isEquipped: this.newItem.isEquipped || false,
           isIdentified: this.newItem.isIdentified !== false // default true
         };
-        this.items.push(item);
+        this.itemService.createItem(item).subscribe(created => {
+          this.items.push(created);
+        });
       }
       this.cancelForm();
     }
@@ -69,7 +94,9 @@ export class ItemsComponent implements OnInit {
 
   deleteItem(id: number | undefined) {
     if (id && confirm('Are you sure you want to delete this item?')) {
-      this.items = this.items.filter(i => i.id !== id);
+      this.itemService.deleteItem(id).subscribe(() => {
+        this.items = this.items.filter(i => i.id !== id);
+      });
     }
   }
 }

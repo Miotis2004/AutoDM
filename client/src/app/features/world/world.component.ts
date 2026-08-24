@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { LocationDto, LocationType } from '../../core/models/location.model';
+import { WorldService } from '../../core/services/world.service';
+import { CampaignState } from '../../core/state/campaign.state';
+
 import { FactionDto } from '../../core/models/faction.model';
 
 @Component({
@@ -28,10 +31,32 @@ export class WorldComponent implements OnInit {
 
   locationTypes = Object.values(LocationType);
 
-  constructor() {}
+    private worldService = inject(WorldService);
+  private campaignState = inject(CampaignState);
+  activeCampaign = this.campaignState.activeCampaign;
+
+  constructor() {
+    effect(() => {
+      const campaign = this.activeCampaign();
+      if (campaign && campaign.id) {
+        this.loadWorldData(campaign.id);
+      } else {
+        this.locations = [];
+        this.factions = [];
+      }
+    });
+  }
+
+  loadWorldData(campaignId: number) {
+    this.worldService.getLocationsByCampaign(campaignId).subscribe(locs => {
+      this.locations = locs;
+    });
+    this.worldService.getFactionsByCampaign(campaignId).subscribe(facs => {
+      this.factions = facs;
+    });
+  }
 
   ngOnInit(): void {
-    // In a real implementation, load these from a service
   }
 
   setTab(tab: 'locations' | 'factions') {
@@ -60,18 +85,22 @@ export class WorldComponent implements OnInit {
       if (this.editingLocationId) {
         const index = this.locations.findIndex(l => l.id === this.editingLocationId);
         if (index !== -1) {
-          this.locations[index] = { ...this.locations[index], ...this.newLocation } as LocationDto;
+          this.worldService.updateLocation(this.editingLocationId, { ...this.locations[index], ...this.newLocation } as LocationDto).subscribe(updated => {
+            this.locations[index] = updated;
+          });
         }
       } else {
         const location: LocationDto = {
           id: Date.now(),
-          campaignId: 1, // hardcoded for now
+          campaignId: this.activeCampaign()?.id || 0,
           name: this.newLocation.name,
           type: this.newLocation.type,
           description: this.newLocation.description || '',
           isDiscovered: this.newLocation.isDiscovered || false
         };
-        this.locations.push(location);
+        this.worldService.createLocation(location.campaignId, location).subscribe(created => {
+          this.locations.push(created);
+        });
       }
       this.cancelLocationForm();
     }
@@ -99,17 +128,21 @@ export class WorldComponent implements OnInit {
       if (this.editingFactionId) {
         const index = this.factions.findIndex(f => f.id === this.editingFactionId);
         if (index !== -1) {
-          this.factions[index] = { ...this.factions[index], ...this.newFaction } as FactionDto;
+          this.worldService.updateFaction(this.editingFactionId, { ...this.factions[index], ...this.newFaction } as FactionDto).subscribe(updated => {
+            this.factions[index] = updated;
+          });
         }
       } else {
         const faction: FactionDto = {
           id: Date.now(),
-          campaignId: 1,
+          campaignId: this.activeCampaign()?.id || 0,
           name: this.newFaction.name,
           description: this.newFaction.description || '',
           goals: this.newFaction.goals || ''
         };
-        this.factions.push(faction);
+        this.worldService.createFaction(faction.campaignId, faction).subscribe(created => {
+          this.factions.push(created);
+        });
       }
       this.cancelFactionForm();
     }
@@ -117,13 +150,17 @@ export class WorldComponent implements OnInit {
 
   deleteLocation(id: number | undefined) {
     if (id && confirm('Are you sure you want to delete this location?')) {
-      this.locations = this.locations.filter(l => l.id !== id);
+      this.worldService.deleteLocation(id).subscribe(() => {
+        this.locations = this.locations.filter(l => l.id !== id);
+      });
     }
   }
 
   deleteFaction(id: number | undefined) {
     if (id && confirm('Are you sure you want to delete this faction?')) {
-      this.factions = this.factions.filter(f => f.id !== id);
+      this.worldService.deleteFaction(id).subscribe(() => {
+        this.factions = this.factions.filter(f => f.id !== id);
+      });
     }
   }
 }
