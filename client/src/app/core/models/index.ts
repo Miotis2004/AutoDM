@@ -8,3 +8,4 @@ export * from './faction.model';
 export * from './session.model';
 export * from './dm.model';
 export * from './api-error.model';
+export * from './settings.model';

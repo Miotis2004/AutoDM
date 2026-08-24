@@ -785,10 +785,10 @@ This document outlines the step-by-step development process for the AutoDM proje
 - **Require Repository Change:** True
 
 **Acceptance Criteria:**
-- [ ] The settings screen exposes configurable local options.
-- [ ] Settings are presented in readable forms.
-- [ ] The application builds successfully.
-- [ ] Settings do not require internet connectivity.
+- [x] The settings screen exposes configurable local options.
+- [x] Settings are presented in readable forms.
+- [x] The application builds successfully.
+- [x] Settings do not require internet connectivity.
 
 ### PROJECT-57: End-to-end campaign creation workflow integration
 **Objective:** Integrate frontend and backend to support a complete campaign creation workflow with character and world setup.
