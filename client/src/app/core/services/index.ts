@@ -6,3 +6,4 @@ export * from './quest.service';
 export * from './item.service';
 export * from './session.service';
 export * from './dungeon-master.service';
+export * from './notification.service';
