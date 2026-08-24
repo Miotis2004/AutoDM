@@ -697,11 +697,11 @@ This document outlines the step-by-step development process for the AutoDM proje
 - **Require Repository Change:** True
 
 **Acceptance Criteria:**
-- [ ] The play screen shows the DM narrative and an action input area.
-- [ ] The play screen shows party summary, current scene/location, and relevant NPCs.
-- [ ] The play screen shows encounter status and recent roll/result information.
-- [ ] The narrative log distinguishes DM narration, player actions, dice results, combat events, and system events.
-- [ ] The application builds successfully.
+- [x] The play screen shows the DM narrative and an action input area.
+- [x] The play screen shows party summary, current scene/location, and relevant NPCs.
+- [x] The play screen shows encounter status and recent roll/result information.
+- [x] The narrative log distinguishes DM narration, player actions, dice results, combat events, and system events.
+- [x] The application builds successfully.
 
 ### PROJECT-51: Session management UI
 **Objective:** Build UI for starting, resuming, and ending sessions and viewing session history.
