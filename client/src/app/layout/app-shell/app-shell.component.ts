@@ -14,6 +14,8 @@ import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
         <li><a routerLink="/quests" routerLinkActive="active">Quests</a></li>
         <li><a routerLink="/world" routerLinkActive="active">World</a></li>
         <li><a routerLink="/npcs" routerLinkActive="active">NPCs</a></li>
+        <li><a routerLink="/items" routerLinkActive="active">Items</a></li>
+        <li><a routerLink="/creatures" routerLinkActive="active">Creatures</a></li>
         <li><a routerLink="/encounters" routerLinkActive="active">Encounters</a></li>
         <li><a routerLink="/history" routerLinkActive="active">History</a></li>
         <li><a routerLink="/settings" routerLinkActive="active">Settings</a></li>

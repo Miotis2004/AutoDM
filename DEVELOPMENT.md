@@ -683,10 +683,10 @@ This document outlines the step-by-step development process for the AutoDM proje
 - **Require Repository Change:** True
 
 **Acceptance Criteria:**
-- [ ] Screens exist for characters, NPCs, locations, quests, factions, items, and creature templates.
-- [ ] Screens support create, edit, and list operations with validation feedback.
-- [ ] Empty states are shown when no records exist.
-- [ ] The application builds successfully.
+- [x] Screens exist for characters, NPCs, locations, quests, factions, items, and creature templates.
+- [x] Screens support create, edit, and list operations with validation feedback.
+- [x] Empty states are shown when no records exist.
+- [x] The application builds successfully.
 
 ### PROJECT-50: Gameplay screen
 **Objective:** Build the primary play screen with DM narrative, action input, party summary, scene/location, relevant NPCs, encounter status, and recent rolls.

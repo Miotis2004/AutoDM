@@ -1,0 +1,111 @@
+<div class="p-6">
+  <h1 class="text-3xl font-bold mb-6">Inventory Management</h1>
+
+  <div class="flex justify-between items-center mb-6">
+    <h2 class="text-xl font-semibold">Items</h2>
+    <button (click)="openForm()" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
+      Add Item
+    </button>
+  </div>
+
+  @if (showForm) {
+    <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+      <h3 class="text-lg font-medium mb-4">{{ editingId ? 'Edit Item' : 'New Item' }}</h3>
+      <form (ngSubmit)="saveItem()" #itemForm="ngForm">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div class="mb-4 lg:col-span-2">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Name *</label>
+            <input type="text" [(ngModel)]="newItem.name" name="name" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+          </div>
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Category</label>
+            <select [(ngModel)]="newItem.category" name="category" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+              <option [ngValue]="undefined">Select Category</option>
+              @for (category of itemCategories; track category) {
+                <option [value]="category">{{ category.replace('_', ' ') }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Quantity</label>
+            <input type="number" [(ngModel)]="newItem.quantity" name="quantity" min="1" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+          </div>
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Weight</label>
+            <input type="number" step="0.1" [(ngModel)]="newItem.weight" name="weight" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+          </div>
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Value</label>
+            <input type="number" step="0.1" [(ngModel)]="newItem.value" name="value" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+          </div>
+
+          <div class="mb-4 lg:col-span-3">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Description</label>
+            <textarea [(ngModel)]="newItem.description" name="description" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" rows="2"></textarea>
+          </div>
+
+          <div class="mb-4 flex items-center">
+            <input type="checkbox" [(ngModel)]="newItem.isEquipped" name="isEquipped" id="isEquipped" class="mr-2 leading-tight">
+            <label for="isEquipped" class="text-sm text-gray-700 font-bold">Is Equipped</label>
+          </div>
+          <div class="mb-4 flex items-center">
+            <input type="checkbox" [(ngModel)]="newItem.isIdentified" name="isIdentified" id="isIdentified" class="mr-2 leading-tight">
+            <label for="isIdentified" class="text-sm text-gray-700 font-bold">Is Identified</label>
+          </div>
+        </div>
+
+        <div class="flex justify-end gap-2 mt-4">
+          <button type="button" (click)="cancelForm()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded">Cancel</button>
+          <button type="submit" [disabled]="!itemForm.form.valid" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded disabled:opacity-50">Save</button>
+        </div>
+      </form>
+    </div>
+  }
+
+  @if (items.length === 0) {
+    <div class="bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg p-12 text-center">
+      <p class="text-gray-500">No items found. Create one to get started.</p>
+    </div>
+  } @else {
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      @for (item of items; track item.id) {
+        <div class="bg-white p-4 rounded-lg shadow border border-gray-200">
+          <div class="flex justify-between items-start">
+            <h3 class="text-lg font-bold">
+              {{ item.name }}
+              @if (item.quantity > 1) {
+                <span class="text-sm font-normal text-gray-500">x{{ item.quantity }}</span>
+              }
+            </h3>
+            @if (item.category) {
+              <span class="text-xs bg-gray-200 px-2 py-1 rounded">{{ item.category.replace('_', ' ') }}</span>
+            }
+          </div>
+
+          <p class="text-sm text-gray-600 mt-2 line-clamp-2">{{ item.description }}</p>
+
+          <div class="mt-4 flex flex-wrap gap-2 text-xs">
+            @if (item.isEquipped) {
+              <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full">Equipped</span>
+            }
+            @if (!item.isIdentified) {
+              <span class="bg-purple-100 text-purple-800 px-2 py-1 rounded-full">Unidentified</span>
+            }
+          </div>
+
+          <div class="mt-4 flex justify-between items-center">
+            <div class="text-sm text-gray-500">
+              @if (item.weight) { <span class="mr-3">Wgt: {{ item.weight }}</span> }
+              @if (item.value) { <span>Val: {{ item.value }}</span> }
+            </div>
+            <div class="flex gap-2">
+              <button (click)="openForm(item)" class="text-blue-500 hover:text-blue-700 text-sm">Edit</button>
+              <button (click)="deleteItem(item.id)" class="text-red-500 hover:text-red-700 text-sm">Delete</button>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>
